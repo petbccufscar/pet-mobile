@@ -7,11 +7,13 @@ import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 class HelpPage extends StatelessWidget {
   HelpPage({Key? key}) : super(key: key);
 
-  final Icon iconOpened = Icon(Icons.arrow_upward);
-  final Icon iconClosed = Icon(Icons.arrow_downward);
+  // Icones: setas para cima e para baixo.
+  final Icon iconOpened = const Icon(Icons.arrow_upward);
+  final Icon iconClosed = const Icon(Icons.arrow_downward);
 
   @override
   Widget build(BuildContext context) {
+    // Textos para os cards. Como usamos o context para definir o locale, eles precisam ser construídos dentro do build.
     final List<_HelpInfo> helpInfoList = [
       _HelpInfo(AppLocalizations.of(context)!.help_page_card_1, AppLocalizations.of(context)!.help_page_card_1_text),
       _HelpInfo(AppLocalizations.of(context)!.help_page_card_2, AppLocalizations.of(context)!.help_page_card_2_text),
@@ -26,6 +28,8 @@ class HelpPage extends StatelessWidget {
       appBarTitle: Text(AppLocalizations.of(context)!.help_page_title),
       body: Container(
         color: const Color.fromARGB(0xff, 0x61, 0xCF, 0xD7),
+
+        // Lista com os cards de ajuda.
         child: ListView.separated(
           itemBuilder: (BuildContext ctx, int index) {
             return Padding(
@@ -38,6 +42,8 @@ class HelpPage extends StatelessWidget {
               child: DropDown(
                 title: Padding(
                   padding: const EdgeInsets.all(10),
+
+                  // Título do card.
                   child: RichText(
                     text: TextSpan(
                       style: TextStyle(
@@ -51,6 +57,8 @@ class HelpPage extends StatelessWidget {
                 ),
                 iconOpened: iconOpened,
                 iconClosed: iconClosed,
+
+                // Texto do card.
                 child: RichText(
                   textAlign: TextAlign.justify,
                   text: TextSpan(
@@ -64,11 +72,14 @@ class HelpPage extends StatelessWidget {
               ),
             );
           },
+
+          // Separador entre os cards. Caixa invisível.
           separatorBuilder: (BuildContext ctx, int index) {
             return SizedBox(
               height: 10,
             );
           },
+
           itemCount: helpInfoList.length,
         ),
       ),

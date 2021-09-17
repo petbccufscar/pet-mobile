@@ -46,6 +46,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # Necessary for i18n
   generate: true
 
   # To add assets to your application, add an assets section, like this:
