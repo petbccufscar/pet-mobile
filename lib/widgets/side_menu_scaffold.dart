@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideMenuScaffold extends StatelessWidget {
-  SideMenuScaffold({Key? key, required this.appBarTitle, required this.body}) : super(key: key);
+  SideMenuScaffold({Key? key, required this.appBarTitle, required this.body})
+      : super(key: key);
 
   final Widget appBarTitle;
   final Widget body;
@@ -35,9 +36,7 @@ class SideMenuScaffold extends StatelessWidget {
         title: appBarTitle,
         automaticallyImplyLeading: false,
         leading: IconButton(
-            icon: const Icon(Icons.dehaze),
-            onPressed: openCloseDrawer
-        ),
+            icon: const Icon(Icons.dehaze), onPressed: openCloseDrawer),
       ),
       body: Scaffold(
         key: _sideMenuKey,
@@ -69,7 +68,15 @@ class _SideMenu extends StatelessWidget {
                 if (current != '/help') Navigator.pushNamed(context, '/help');
               },
             ),
-            // Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+                text: AppLocalizations.of(context)!.mural_page_title,
+                onTap: () {
+                  closeDrawer();
+                  String? current = ModalRoute.of(context)!.settings.name;
+                  if (current != '/mural')
+                    Navigator.pushNamed(context, '/mural');
+                })
           ],
         ),
       ),
@@ -78,7 +85,8 @@ class _SideMenu extends StatelessWidget {
 }
 
 class _SideMenuItem extends StatelessWidget {
-  _SideMenuItem({Key? key, required this.text, required this.onTap}) : super(key: key);
+  _SideMenuItem({Key? key, required this.text, required this.onTap})
+      : super(key: key);
 
   final String text;
 
