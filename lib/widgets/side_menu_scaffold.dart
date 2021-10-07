@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideMenuScaffold extends StatelessWidget {
-  SideMenuScaffold({Key? key, required this.appBarTitle, required this.body}) : super(key: key);
+  SideMenuScaffold({Key? key, required this.appBarTitle, required this.body})
+      : super(key: key);
 
   final Widget appBarTitle;
   final Widget body;
@@ -35,9 +36,7 @@ class SideMenuScaffold extends StatelessWidget {
         title: appBarTitle,
         automaticallyImplyLeading: false,
         leading: IconButton(
-            icon: const Icon(Icons.dehaze),
-            onPressed: openCloseDrawer
-        ),
+            icon: const Icon(Icons.dehaze), onPressed: openCloseDrawer),
       ),
       body: Scaffold(
         key: _sideMenuKey,
@@ -62,6 +61,7 @@ class _SideMenu extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           children: [
             _SideMenuItem(
+              icon: const Icon(Icons.check, size: 35),
               text: AppLocalizations.of(context)!.help_page_title,
               onTap: () {
                 closeDrawer();
@@ -78,9 +78,13 @@ class _SideMenu extends StatelessWidget {
 }
 
 class _SideMenuItem extends StatelessWidget {
-  _SideMenuItem({Key? key, required this.text, required this.onTap}) : super(key: key);
+  _SideMenuItem(
+      {Key? key, required this.text, required this.onTap, required this.icon})
+      : super(key: key);
 
   final String text;
+
+  final Widget icon;
 
   final void Function() onTap;
 
@@ -94,7 +98,7 @@ class _SideMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.group, size: 35),
+      leading: icon,
       title: Text(text, style: textStyle),
       onTap: onTap,
     );
