@@ -21,6 +21,8 @@ class _MuralProjetoState extends State<MuralProjeto> {
     "Lorenzo",
     "Matheus",
   ];
+  bool readMoreObj = false;
+  bool readMoreMem = false;
 
   // Próximas reuniões.
   List<String> meets = ["Setembro, 15 - 16h30"];
@@ -105,33 +107,70 @@ class _MuralProjetoState extends State<MuralProjeto> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Theme(
-                                data: Theme.of(context)
-                                    .copyWith(dividerColor: Colors.transparent),
-                                child: ExpansionTile(
-                                  iconColor: Colors.white,
-                                  initiallyExpanded: true,
-                                  collapsedIconColor: Colors.white,
-                                  childrenPadding:
-                                      EdgeInsets.fromLTRB(10, 5, 10, 10),
-                                  title: Text(
-                                    "Objetivos",
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.white,
-                                        fontFamily: "Roboto",
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  children: [
-                                    Text(
-                                      goal,
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                child: Text(
+                                  "Objetivos",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                child: Text(
+                                  goal,
+                                  maxLines: readMoreObj ? null : 4,
+                                  overflow: readMoreObj
+                                      ? TextOverflow.visible
+                                      : TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 18, fontFamily: "Comfortaa"),
+                                ),
+                              ),
+                              Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: goal.length > 65
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(
+                                                  () {
+                                                    readMoreObj = !readMoreObj;
+                                                  },
+                                                );
+                                              },
+                                              child: Text(
+                                                "Ler mais",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(
+                                                  readMoreObj
+                                                      ? Icons.navigate_before
+                                                      : Icons.navigate_next,
+                                                  color: Colors.white),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    readMoreObj = !readMoreObj;
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : null)
                             ],
                           ),
                         ),
@@ -152,30 +191,70 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Theme(
-                                  data: Theme.of(context).copyWith(
-                                      dividerColor: Colors.transparent),
-                                  child: ExpansionTile(
-                                    iconColor: Colors.white,
-                                    collapsedIconColor: Colors.white,
-                                    title: Text(
-                                      "Membros",
-                                      style: TextStyle(
-                                          fontSize: 22,
-                                          color: Colors.white,
-                                          fontFamily: "Roboto",
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    childrenPadding:
-                                        EdgeInsets.fromLTRB(10, 5, 10, 10),
-                                    children: [
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: members.length,
-                                          itemBuilder: lMemberBuilder),
-                                    ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                  child: Text(
+                                    "Membros",
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          readMoreMem ? members.length : 4,
+                                      itemBuilder: lMemberBuilder),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: members.length > 5
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(
+                                                    () {
+                                                      readMoreMem =
+                                                          !readMoreMem;
+                                                    },
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "Ler mais",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Roboto",
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(
+                                                    readMoreMem
+                                                        ? Icons.navigate_before
+                                                        : Icons.navigate_next,
+                                                    color: Colors.white),
+                                                onPressed: () {
+                                                  setState(
+                                                    () {
+                                                      readMoreMem =
+                                                          !readMoreMem;
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        : null)
                               ],
                             ),
                           ),
@@ -201,7 +280,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Text(
                               "Próximas Reuniões",
                               style: TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 24,
                                   color: Colors.white,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w700),
@@ -245,7 +324,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Text(
                               "Tarefas",
                               style: TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 24,
                                   color: Colors.white,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w700),
