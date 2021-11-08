@@ -92,7 +92,8 @@ class _MuralProjetoState extends State<MuralProjeto> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
+                      Flexible(
+                        flex: 2,
                         child: Container(
                           decoration: const BoxDecoration(
                               color: Color(0xFFFBAB48),
@@ -104,46 +105,42 @@ class _MuralProjetoState extends State<MuralProjeto> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                    top: 5, start: 10),
-                                child: Text(
-                                  "Objetivos",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontFamily: "Roboto",
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 5, start: 10),
-                                child: Text(
-                                  goal,
-                                  style: const TextStyle(
-                                      fontSize: 18, fontFamily: "Comfortaa"),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.navigate_next,
-                                    color: Colors.white,
+                              Theme(
+                                data: Theme.of(context)
+                                    .copyWith(dividerColor: Colors.transparent),
+                                child: ExpansionTile(
+                                  iconColor: Colors.white,
+                                  initiallyExpanded: true,
+                                  collapsedIconColor: Colors.white,
+                                  childrenPadding:
+                                      EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                  title: Text(
+                                    "Objetivos",
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        color: Colors.white,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w700),
                                   ),
+                                  children: [
+                                    Text(
+                                      goal,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "Comfortaa"),
+                                    ),
+                                  ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
+                        flex: 2,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Container(
-                            //height: members.isEmpty ? null : _scrnH / 5,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
@@ -155,36 +152,30 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                      top: 5, start: 10),
-                                  child: Text(
-                                    "Membros",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                        fontFamily: "Roboto",
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      top: 5, start: 10),
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: members.length,
-                                      itemBuilder: lMemberBuilder),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.navigate_next,
-                                      color: Colors.white,
+                                Theme(
+                                  data: Theme.of(context).copyWith(
+                                      dividerColor: Colors.transparent),
+                                  child: ExpansionTile(
+                                    iconColor: Colors.white,
+                                    collapsedIconColor: Colors.white,
+                                    title: Text(
+                                      "Membros",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.white,
+                                          fontFamily: "Roboto",
+                                          fontWeight: FontWeight.w700),
                                     ),
+                                    childrenPadding:
+                                        EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                    children: [
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: members.length,
+                                          itemBuilder: lMemberBuilder),
+                                    ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -210,7 +201,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Text(
                               "Próximas Reuniões",
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 22,
                                   color: Colors.white,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w700),
@@ -254,7 +245,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             child: Text(
                               "Tarefas",
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 22,
                                   color: Colors.white,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w700),
