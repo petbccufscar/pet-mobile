@@ -68,7 +68,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
     return SideMenuScaffold(
         appBarTitle: Text(AppLocalizations.of(context)!.mural_page_title),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
             child: ListView(children: [
               Text(
                 projectName,
@@ -181,7 +181,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                       Padding(
                         padding: const EdgeInsets.only(top: _paddingColumn),
                         child: Container(
-                          height: _scrnH / 8,
+                          height: _scrnH / 4,
                           decoration: const BoxDecoration(
                               color: Color(0xFFF0766B),
                               borderRadius:
@@ -191,7 +191,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             children: [
                               const Padding(
                                   padding: EdgeInsetsDirectional.only(
-                                      top: 5, start: 10),
+                                      top: 5, start: 10, bottom: 10),
                                   child: Text(
                                     "Próximas Reuniões",
                                     style: TextStyle(
