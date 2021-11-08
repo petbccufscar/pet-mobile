@@ -97,9 +97,10 @@ class _MuralProjetoState extends State<MuralProjeto> {
                           decoration: const BoxDecoration(
                               color: Color(0xFFFBAB48),
                               borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10))),
+                                topRight: Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              )),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -145,9 +146,10 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             //height: members.isEmpty ? null : _scrnH / 5,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
                               color: Color(0xFFC48BDC),
                             ),
                             child: Column(
@@ -166,12 +168,13 @@ class _MuralProjetoState extends State<MuralProjeto> {
                                   ),
                                 ),
                                 Padding(
-                                    padding: const EdgeInsetsDirectional.only(
-                                        top: 5, start: 10),
-                                    child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: members.length,
-                                        itemBuilder: lMemberBuilder)),
+                                  padding: const EdgeInsetsDirectional.only(
+                                      top: 5, start: 10),
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: members.length,
+                                      itemBuilder: lMemberBuilder),
+                                ),
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: IconButton(
@@ -195,7 +198,9 @@ class _MuralProjetoState extends State<MuralProjeto> {
                       height: _scrnH / 4,
                       decoration: const BoxDecoration(
                           color: Color(0xFFF0766B),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          )),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -237,7 +242,9 @@ class _MuralProjetoState extends State<MuralProjeto> {
                       height: _scrnH / 4,
                       decoration: const BoxDecoration(
                           color: Color(0xFF61CFD7),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          )),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
