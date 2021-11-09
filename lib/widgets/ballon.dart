@@ -59,7 +59,7 @@ class _BallonContainerState extends State<BallonContainer> {
                         GestureDetector(
                           onTap: widget.onTap,
                           child: Text(
-                            "Ler mais",
+                            widget.readMore ? "Ler menos" : "Ler mais",
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: "Roboto",

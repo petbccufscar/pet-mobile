@@ -110,14 +110,14 @@ class _MuralProjetoState extends State<MuralProjeto> {
                                 bottomLeft: Radius.circular(10)),
                             title: "Objetivos",
                             child: Text(goal,
-                                maxLines: readMoreObj ? null : 4,
+                                maxLines: readMoreObj ? null : 3,
                                 overflow: readMoreObj
                                     ? TextOverflow.visible
                                     : TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     fontSize: 18, fontFamily: "Comfortaa")),
                             readMore: readMoreObj,
-                            cndLeiaMais: goal.length > 65),
+                            cndLeiaMais: goal.length > 50),
                       ),
                       Flexible(
                         flex: 2,
@@ -135,12 +135,12 @@ class _MuralProjetoState extends State<MuralProjeto> {
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10),
                             ),
-                            cndLeiaMais: members.length > 5,
-                            readMore: readMoreObj,
+                            cndLeiaMais: members.length > 4,
+                            readMore: readMoreMem,
                             title: 'Membros',
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: readMoreMem ? members.length : 4,
+                                itemCount: readMoreMem ? members.length : 3,
                                 itemBuilder: lMemberBuilder),
                           ),
                         ),
