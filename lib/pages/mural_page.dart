@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import "package:pet_mobile/widgets/ballon.dart";
 
 class MuralProjeto extends StatefulWidget {
   const MuralProjeto({Key? key}) : super(key: key);
@@ -96,167 +97,51 @@ class _MuralProjetoState extends State<MuralProjeto> {
                     children: [
                       Flexible(
                         flex: 2,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Color(0xFFFBAB48),
-                              borderRadius: BorderRadius.only(
+                        child: BallonContainer(
+                            onTap: () {
+                              setState(() {
+                                readMoreObj = !readMoreObj;
+                              });
+                            },
+                            backGroundColor: Color(0xFFFBAB48),
+                            borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(10),
                                 topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              )),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                                child: Text(
-                                  "Objetivos",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontFamily: "Roboto",
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                child: Text(
-                                  goal,
-                                  maxLines: readMoreObj ? null : 4,
-                                  overflow: readMoreObj
-                                      ? TextOverflow.visible
-                                      : TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 18, fontFamily: "Comfortaa"),
-                                ),
-                              ),
-                              Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: goal.length > 65
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(
-                                                  () {
-                                                    readMoreObj = !readMoreObj;
-                                                  },
-                                                );
-                                              },
-                                              child: Text(
-                                                "Ler mais",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: "Roboto",
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(
-                                                  readMoreObj
-                                                      ? Icons.navigate_before
-                                                      : Icons.navigate_next,
-                                                  color: Colors.white),
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    readMoreObj = !readMoreObj;
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                      : null)
-                            ],
-                          ),
-                        ),
+                                bottomLeft: Radius.circular(10)),
+                            title: "Objetivos",
+                            child: Text(goal,
+                                maxLines: readMoreObj ? null : 4,
+                                overflow: readMoreObj
+                                    ? TextOverflow.visible
+                                    : TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 18, fontFamily: "Comfortaa")),
+                            readMore: readMoreObj,
+                            cndLeiaMais: goal.length > 65),
                       ),
                       Flexible(
                         flex: 2,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                              color: Color(0xFFC48BDC),
+                          child: BallonContainer(
+                            onTap: () {
+                              setState(() {
+                                readMoreMem = !readMoreMem;
+                              });
+                            },
+                            backGroundColor: Color(0xFFC48BDC),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                                  child: Text(
-                                    "Membros",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                        fontFamily: "Roboto",
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          readMoreMem ? members.length : 4,
-                                      itemBuilder: lMemberBuilder),
-                                ),
-                                Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: members.length > 5
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(
-                                                    () {
-                                                      readMoreMem =
-                                                          !readMoreMem;
-                                                    },
-                                                  );
-                                                },
-                                                child: Text(
-                                                  "Ler mais",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Roboto",
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(
-                                                    readMoreMem
-                                                        ? Icons.navigate_before
-                                                        : Icons.navigate_next,
-                                                    color: Colors.white),
-                                                onPressed: () {
-                                                  setState(
-                                                    () {
-                                                      readMoreMem =
-                                                          !readMoreMem;
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        : null)
-                              ],
-                            ),
+                            cndLeiaMais: members.length > 5,
+                            readMore: readMoreObj,
+                            title: 'Membros',
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: readMoreMem ? members.length : 4,
+                                itemBuilder: lMemberBuilder),
                           ),
                         ),
                       ),
