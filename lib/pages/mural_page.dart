@@ -24,6 +24,8 @@ class _MuralProjetoState extends State<MuralProjeto> {
   ];
   bool readMoreObj = false;
   bool readMoreMem = false;
+  bool readMoreMeet = false;
+  bool readMoreTsk = false;
 
   // Próximas reuniões.
   List<String> meets = ["Setembro, 15 - 16h30"];
@@ -38,6 +40,8 @@ class _MuralProjetoState extends State<MuralProjeto> {
 
   Widget listBuilder(BuildContext context, int index) {
     return CheckboxListTile(
+      dense: true,
+      contentPadding: EdgeInsets.all(0),
       value: _toDo[index]["finished"],
       onChanged: (c) {
         setState(
@@ -61,19 +65,15 @@ class _MuralProjetoState extends State<MuralProjeto> {
   }
 
   Widget lMeetsBuilder(BuildContext context, int index) {
-    return (Padding(
-      padding: const EdgeInsets.only(left: 10, top: 5),
-      child: Text(
-        meets[index],
-        style: const TextStyle(fontSize: 18, fontFamily: "Comfortaa"),
-      ),
+    return (Text(
+      meets[index],
+      style: const TextStyle(fontSize: 18, fontFamily: "Comfortaa"),
     ));
   }
 
   @override
   Widget build(BuildContext context) {
     // Variável para manipulação da altura de widgets baseada na altura da tela
-    double _scrnH = MediaQuery.of(context).size.height;
     return SideMenuScaffold(
       appBarTitle: Text(AppLocalizations.of(context)!.mural_page_title),
       body: Padding(
@@ -140,7 +140,9 @@ class _MuralProjetoState extends State<MuralProjeto> {
                             title: 'Membros',
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: readMoreMem ? members.length : 3,
+                                itemCount: readMoreMem
+                                    ? members.length
+                                    : (members.length < 3 ? members.length : 3),
                                 itemBuilder: lMemberBuilder),
                           ),
                         ),
@@ -149,89 +151,51 @@ class _MuralProjetoState extends State<MuralProjeto> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: _paddingColumn),
-                    child: Container(
-                      height: _scrnH / 4,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFFF0766B),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsetsDirectional.only(
-                                top: 5, start: 10, bottom: 10),
-                            child: Text(
-                              "Próximas Reuniões",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: meets.length,
-                              itemBuilder: lMeetsBuilder,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.navigate_next,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
+                    child: BallonContainer(
+                      backGroundColor: Color(0xFFF0766B),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      cndLeiaMais: meets.length > 4,
+                      onTap: () {
+                        setState(() {
+                          readMoreMeet = !readMoreMeet;
+                        });
+                      },
+                      readMore: readMoreMeet,
+                      title: 'Próximas Reuniões',
+                      child: Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: readMoreMeet
+                              ? meets.length
+                              : (meets.length < 3 ? meets.length : 3),
+                          itemBuilder: lMeetsBuilder,
+                        ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: _paddingColumn),
-                    child: Container(
-                      height: _scrnH / 4,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF61CFD7),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding:
-                                EdgeInsetsDirectional.only(top: 5, start: 10),
-                            child: Text(
-                              "Tarefas",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemBuilder: listBuilder,
-                              itemCount: _toDo.length,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.navigate_next,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
+                    child: BallonContainer(
+                      backGroundColor: Color(0xFF61CFD7),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      cndLeiaMais: _toDo.length > 4,
+                      onTap: () {
+                        setState(() {
+                          readMoreTsk = !readMoreTsk;
+                        });
+                      },
+                      readMore: readMoreTsk,
+                      title: 'Tarefas',
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: listBuilder,
+                        itemCount: readMoreTsk
+                            ? _toDo.length
+                            : (_toDo.length < 3 ? _toDo.length : 3),
                       ),
                     ),
                   )

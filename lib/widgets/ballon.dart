@@ -1,16 +1,16 @@
 import "package:flutter/material.dart";
 
 class BallonContainer extends StatefulWidget {
-  BallonContainer(
-      {Key? key,
-      required this.borderRadius,
-      required this.title,
-      required this.child,
-      required this.readMore,
-      required this.cndLeiaMais,
-      required this.backGroundColor,
-      required this.onTap})
-      : super(key: key);
+  BallonContainer({
+    Key? key,
+    required this.borderRadius,
+    required this.title,
+    required this.child,
+    required this.readMore,
+    required this.cndLeiaMais,
+    required this.backGroundColor,
+    required this.onTap,
+  }) : super(key: key);
 
   final BorderRadiusGeometry borderRadius;
   final String title;
