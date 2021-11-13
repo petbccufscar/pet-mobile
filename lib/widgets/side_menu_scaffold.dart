@@ -106,6 +106,36 @@ class _SideMenu extends StatelessWidget {
                 if (current != '/register/group') Navigator.pushNamed(context, '/register/group');
               },
             ),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+              iconData: Icons.add,
+              text: 'Meet Page',
+              onTap: () {
+                closeDrawer();
+                String? current = ModalRoute.of(context)!.settings.name;
+                if (current != '/meet') Navigator.pushNamed(context, '/meet');
+              },
+            ),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+              iconData: Icons.add,
+              text: 'Login',
+              onTap: () {
+                closeDrawer();
+                String? current = ModalRoute.of(context)!.settings.name;
+                if (current != '/login') Navigator.pushNamed(context, '/login');
+              },
+            ),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+              iconData: Icons.add,
+              text: 'Mural Projetos',
+              onTap: () {
+                closeDrawer();
+                String? current = ModalRoute.of(context)!.settings.name;
+                if (current != '/mural') Navigator.pushNamed(context, '/mural');
+              },
+            ),
           ],
         ),
       ),

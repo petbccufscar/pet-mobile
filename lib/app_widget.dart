@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_mobile/cadastroPetiano.dart';
-import 'package:pet_mobile/criarGrupo.dart';
+import 'pages/MeetPage.dart';
+import 'pages/cadastroPetiano.dart';
+import 'pages/criarGrupo.dart';
 import 'package:pet_mobile/pages/calendar_page.dart';
 import 'package:pet_mobile/pages/help_page.dart';
 import 'package:pet_mobile/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pet_mobile/pages/mural_page.dart';
 
+import 'pages/LoginPage.dart';
 import 'config/themes/theme.dart';
 
 // Widget principal do app.
@@ -32,6 +35,9 @@ class AppWidget extends StatelessWidget {
         '/calendar': (context) => CalendarPage(),
         '/register/petiano': (context) => CadasPetiano(),
         '/register/group': (context) => CriarGrupo(),
+        '/meet': (context) => MeetPage(),
+        '/login': (context) => LoginPage(),
+        '/mural': (context) => MuralProjeto(),
       },
     );
   }
