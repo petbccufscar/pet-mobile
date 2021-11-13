@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_mobile/pages/calendar_page.dart';
 import 'package:pet_mobile/pages/help_page.dart';
 import 'package:pet_mobile/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,6 +27,7 @@ class AppWidget extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/help': (context) => HelpPage(),
+        '/calendar': (context) => CalendarPage(),
       },
     );
   }
