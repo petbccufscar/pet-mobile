@@ -86,6 +86,26 @@ class _SideMenu extends StatelessWidget {
                 if (current != '/calendar') Navigator.pushNamed(context, '/calendar');
               },
             ),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+              iconData: Icons.add,
+              text: 'Registrar Petiano',
+              onTap: () {
+                closeDrawer();
+                String? current = ModalRoute.of(context)!.settings.name;
+                if (current != '/register/petiano') Navigator.pushNamed(context, '/register/petiano');
+              },
+            ),
+            Divider(height: 1, thickness: 1, color: Colors.red.shade500),
+            _SideMenuItem(
+              iconData: Icons.add,
+              text: 'Registrar Grupo',
+              onTap: () {
+                closeDrawer();
+                String? current = ModalRoute.of(context)!.settings.name;
+                if (current != '/register/group') Navigator.pushNamed(context, '/register/group');
+              },
+            ),
           ],
         ),
       ),

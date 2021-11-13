@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_mobile/cadastroPetiano.dart';
+import 'package:pet_mobile/criarGrupo.dart';
 import 'package:pet_mobile/pages/calendar_page.dart';
 import 'package:pet_mobile/pages/help_page.dart';
 import 'package:pet_mobile/pages/home_page.dart';
@@ -28,6 +30,8 @@ class AppWidget extends StatelessWidget {
         '/': (context) => HomePage(),
         '/help': (context) => HelpPage(),
         '/calendar': (context) => CalendarPage(),
+        '/register/petiano': (context) => CadasPetiano(),
+        '/register/group': (context) => CriarGrupo(),
       },
     );
   }
