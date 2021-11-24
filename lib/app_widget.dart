@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'pages/MeetPage.dart';
-import 'pages/cadastroPetiano.dart';
-import 'pages/criarGrupo.dart';
+import 'pages/meet_page.dart';
+import 'pages/cadastro_petiano.dart';
+import 'pages/criar_grupo.dart';
 import 'package:pet_mobile/pages/calendar_page.dart';
 import 'package:pet_mobile/pages/help_page.dart';
 import 'package:pet_mobile/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
 
-import 'pages/LoginPage.dart';
+import 'pages/login_page.dart';
 import 'config/themes/theme.dart';
 
 // Widget principal do app.
