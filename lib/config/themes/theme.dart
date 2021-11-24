@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get theme {
     return ThemeData(
-      primaryColor: Colors.blue,
+      primaryColor: Colors.green,
       scaffoldBackgroundColor: Colors.white,
       fontFamily: 'Hack',
       buttonTheme: ButtonThemeData(
