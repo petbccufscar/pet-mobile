@@ -9,6 +9,7 @@ class AdicionarProjeto extends StatefulWidget {
 }
 
 class _AdicionarProjetoState extends State<AdicionarProjeto> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _nomeProjeto = TextEditingController();
   TextEditingController _areaProjeto = TextEditingController();
   TextEditingController _descricao = TextEditingController();
@@ -85,86 +86,94 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
               Padding(
                 padding: EdgeInsets.only(top: 25),
               ),
-              TextFormField(
-                controller: _nomeProjeto,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Nome do projeto",
-                    hintStyle: TextStyle(color: Color(0xFF989898)),
-                    fillColor: Color(0xFFFFFFFF),
-                    filled: true),
-              ),
-              TextFormField(
-                controller: _areaProjeto,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Área do projeto",
-                    hintStyle: TextStyle(color: Color(0xFF989898)),
-                    fillColor: Color(0xFFFFFFFF),
-                    filled: true),
-              ),
-              TextFormField(
-                controller: _descricao,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Breve descrição",
-                    hintStyle: TextStyle(color: Color(0xFF989898)),
-                    fillColor: Color(0xFFFFFFFF),
-                    filled: true),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Data de início",
-                    hintStyle: TextStyle(color: Color(0xFF989898)),
-                    fillColor: Color(0xFFFFFFFF),
-                    filled: true),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Data de fim",
-                    hintStyle: TextStyle(color: Color(0xFF989898)),
-                    fillColor: Color(0xFFFFFFFF),
-                    filled: true),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _members.length,
-                    itemBuilder: listBuildNewMembers),
-              ),
-              Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(
-                            () {
-                              if (_novoMembro.text.isNotEmpty)
-                                _members.add(_novoMembro.text);
-                              _novoMembro.text = "";
-                            },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.add_circle_rounded,
-                          color: Color(0xFF6CEA9E),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nomeProjeto,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Nome do projeto",
+                          hintStyle: TextStyle(color: Color(0xFF989898)),
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true),
+                    ),
+                    TextFormField(
+                      controller: _areaProjeto,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Área do projeto",
+                          hintStyle: TextStyle(color: Color(0xFF989898)),
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true),
+                    ),
+                    TextFormField(
+                      controller: _descricao,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Breve descrição",
+                          hintStyle: TextStyle(color: Color(0xFF989898)),
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true),
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Data de início",
+                          hintStyle: TextStyle(color: Color(0xFF989898)),
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true),
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Data de fim",
+                          hintStyle: TextStyle(color: Color(0xFF989898)),
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _members.length,
+                          itemBuilder: listBuildNewMembers),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    if (_novoMembro.text.isNotEmpty)
+                                      _members.add(_novoMembro.text);
+                                    _novoMembro.text = "";
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.add_circle_rounded,
+                                color: Color(0xFF6CEA9E),
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _novoMembro,
+                                decoration: InputDecoration(
+                                    hintText: "Adicionar membro",
+                                    border: InputBorder.none),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _novoMembro,
-                          decoration:
-                              InputDecoration(hintText: "Adicionar membro"),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
