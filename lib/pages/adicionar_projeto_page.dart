@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
+import "package:pet_mobile/utils.dart";
 
 class AdicionarProjeto extends StatefulWidget {
   const AdicionarProjeto({Key? key}) : super(key: key);
@@ -14,8 +15,145 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
   TextEditingController _areaProjeto = TextEditingController();
   TextEditingController _descricao = TextEditingController();
   TextEditingController _novoMembro = TextEditingController();
-
+  late DateTime toDate;
+  late DateTime fromDate;
   List _members = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fromDate = DateTime.now();
+    toDate = DateTime.now().add(Duration(days: 730));
+  }
+
+  Future<DateTime?> pickDateTime(
+    DateTime initialDate, {
+    required bool pickDate,
+    DateTime? firstDate,
+  }) async {
+    if (pickDate) {
+      final date = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: firstDate ?? DateTime(2015, 8), // Range de escolha de data
+        lastDate: DateTime(2101),
+      );
+
+      if (date == null) return null;
+
+      final time = Duration(
+        hours: initialDate.hour,
+        minutes: initialDate.minute,
+      );
+
+      return date.add(time);
+    } else {
+      final timeOfDay = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(initialDate),
+      );
+      if (timeOfDay == null) return null;
+
+      final date = DateTime(
+        initialDate.year,
+        initialDate.month,
+        initialDate.day,
+      );
+
+      final time = Duration(
+        hours: timeOfDay.hour,
+        minutes: timeOfDay.minute,
+      );
+
+      return date.add(time);
+    }
+  }
+
+  Future pickFromDateTime({required bool pickDate}) async {
+    final date = await pickDateTime(
+      fromDate,
+      pickDate: pickDate,
+    );
+
+    if (date == null) return;
+
+    if (date.isAfter(toDate)) {
+      toDate = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        (fromDate.hour + 2),
+        fromDate.minute,
+      );
+    }
+    setState(() => fromDate = date);
+  }
+
+  Future pickToDateTime({required bool pickDate}) async {
+    final date = await pickDateTime(
+      toDate,
+      pickDate: pickDate,
+      firstDate: pickDate ? fromDate : null,
+    );
+
+    if (date == null) return;
+
+    /*
+    Faz com que seja possivel selecionar uma data final (toDate) que é
+    anterior a data inicial(fromDate), mas ao fazer isso a data inicial vira a
+    data final -2 horas #TODO Escolher como implementar isso depois.
+    if (date.isBefore(fromDate)) {
+      fromDate = DateTime(
+          date.year, date.month, date.day, (toDate.hour - 2), fromDate.minute);
+    }
+    */
+    setState(() => toDate = date);
+  }
+
+  Widget buildHeader({
+    required String header,
+    required Widget child,
+  }) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            header,
+            style: TextStyle(color: Colors.grey),
+          ),
+          child,
+        ],
+      );
+
+  Widget buildDropdownField({
+    required String text,
+    required VoidCallback onClicked,
+  }) =>
+      ListTile(
+        title: Text(text),
+        trailing: Icon(Icons.arrow_drop_down),
+        onTap: onClicked,
+      );
+
+  Widget buildDateTimePickes() => Column(
+        children: [buildFrom(), buildTo()],
+      );
+
+  Widget buildFrom() => buildHeader(
+        header: 'Data de início',
+        child: buildDropdownField(
+          text: Utils.toDate(fromDate),
+          onClicked: () => pickFromDateTime(pickDate: true),
+        ),
+      );
+
+  Widget buildTo() => buildHeader(
+        header: 'Data de fim',
+        child: buildDropdownField(
+          text: Utils.toDate(toDate),
+          onClicked: () => pickToDateTime(pickDate: true),
+        ),
+      );
 
   Widget listBuildNewMembers(context, index) {
     return Container(
@@ -117,22 +255,32 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
                           fillColor: Color(0xFFFFFFFF),
                           filled: true),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Data de início",
-                          hintStyle: TextStyle(color: Color(0xFF989898)),
-                          fillColor: Color(0xFFFFFFFF),
-                          filled: true),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: Container(
+                          padding: EdgeInsets.only(
+                            left: 5,
+                            top: 10,
+                          ),
+                          color: Colors.white,
+                          child: buildDateTimePickes()),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Data de fim",
-                          hintStyle: TextStyle(color: Color(0xFF989898)),
-                          fillColor: Color(0xFFFFFFFF),
-                          filled: true),
-                    ),
+                    // TextFormField(
+                    //   decoration: InputDecoration(
+                    //       border: InputBorder.none,
+                    //       hintText: "Data de início",
+                    //       hintStyle: TextStyle(color: Color(0xFF989898)),
+                    //       fillColor: Color(0xFFFFFFFF),
+                    //       filled: true),
+                    // ),
+                    // TextFormField(
+                    //   decoration: InputDecoration(
+                    //       border: InputBorder.none,
+                    //       hintText: "Data de fim",
+                    //       hintStyle: TextStyle(color: Color(0xFF989898)),
+                    //       fillColor: Color(0xFFFFFFFF),
+                    //       filled: true),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
                       child: ListView.builder(
@@ -163,6 +311,17 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                // Adiciona o membro ao apertar ENTER.
+                                onFieldSubmitted: (membro) {
+                                  _novoMembro.text = membro;
+                                  setState(
+                                    () {
+                                      if (_novoMembro.text.isNotEmpty)
+                                        _members.add(_novoMembro.text);
+                                      _novoMembro.text = "";
+                                    },
+                                  );
+                                },
                                 controller: _novoMembro,
                                 decoration: InputDecoration(
                                     hintText: "Adicionar membro",
