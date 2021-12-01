@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../provider/event_provider.dart';
@@ -24,8 +25,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget build(BuildContext context) {
     final events = Provider.of<EventProvider>(context).events;
 
+    final now = new DateTime.now();
+    final date = new DateTime(now.year, now.month);
+    final dateString = new DateFormat('MMMM yyyy').format(date);
+
     return Scaffold(
       appBar: AppBar(
+        title: Text(dateString),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.calendar_view_month),
