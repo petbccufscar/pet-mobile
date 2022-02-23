@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideMenuScaffold extends StatelessWidget {
-  SideMenuScaffold({
-    Key? key,
-    required this.appBarTitle,
-    required this.body
-  }) : super(key: key);
+  SideMenuScaffold({Key? key, required this.appBarTitle, required this.body})
+      : super(key: key);
 
   final Widget appBarTitle;
   final Widget body;
@@ -38,9 +35,7 @@ class SideMenuScaffold extends StatelessWidget {
         title: appBarTitle,
         automaticallyImplyLeading: false,
         leading: IconButton(
-            icon: const Icon(Icons.dehaze),
-            onPressed: openCloseDrawer
-        ),
+            icon: const Icon(Icons.dehaze), onPressed: openCloseDrawer),
       ),
       body: Scaffold(
         key: _sideMenuKey,
@@ -52,10 +47,7 @@ class SideMenuScaffold extends StatelessWidget {
 }
 
 class _SideMenu extends StatelessWidget {
-  _SideMenu({
-    Key? key,
-    required this.closeDrawer
-  }) : super(key: key);
+  _SideMenu({Key? key, required this.closeDrawer}) : super(key: key);
 
   final void Function() closeDrawer;
 
@@ -83,7 +75,8 @@ class _SideMenu extends StatelessWidget {
               onTap: () {
                 closeDrawer();
                 String? current = ModalRoute.of(context)!.settings.name;
-                if (current != '/calendar') Navigator.pushNamed(context, '/calendar');
+                if (current != '/calendar')
+                  Navigator.pushNamed(context, '/calendar');
               },
             ),
             Divider(height: 1, thickness: 1, color: Colors.red.shade500),
@@ -93,7 +86,8 @@ class _SideMenu extends StatelessWidget {
               onTap: () {
                 closeDrawer();
                 String? current = ModalRoute.of(context)!.settings.name;
-                if (current != '/register/petiano') Navigator.pushNamed(context, '/register/petiano');
+                if (current != '/register/petiano')
+                  Navigator.pushNamed(context, '/register/petiano');
               },
             ),
             Divider(height: 1, thickness: 1, color: Colors.red.shade500),
@@ -103,7 +97,8 @@ class _SideMenu extends StatelessWidget {
               onTap: () {
                 closeDrawer();
                 String? current = ModalRoute.of(context)!.settings.name;
-                if (current != '/register/group') Navigator.pushNamed(context, '/register/group');
+                if (current != '/register/group')
+                  Navigator.pushNamed(context, '/register/group');
               },
             ),
             Divider(height: 1, thickness: 1, color: Colors.red.shade500),
@@ -136,6 +131,20 @@ class _SideMenu extends StatelessWidget {
                 if (current != '/mural') Navigator.pushNamed(context, '/mural');
               },
             ),
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.red.shade500,
+            ),
+            _SideMenuItem(
+                iconData: Icons.add,
+                text: "Adicionar projeto",
+                onTap: () {
+                  closeDrawer();
+                  String? current = ModalRoute.of(context)!.settings.name;
+                  if (current != '/adicionar')
+                    Navigator.pushNamed(context, '/adicionar');
+                })
           ],
         ),
       ),
@@ -144,12 +153,12 @@ class _SideMenu extends StatelessWidget {
 }
 
 class _SideMenuItem extends StatelessWidget {
-  _SideMenuItem({
-    Key? key,
-    required this.iconData,
-    required this.text,
-    required this.onTap
-  }) : super(key: key);
+  _SideMenuItem(
+      {Key? key,
+      required this.iconData,
+      required this.text,
+      required this.onTap})
+      : super(key: key);
 
   final IconData iconData;
   final String text;
