@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,8 +22,10 @@ class LoginTela extends State<LoginPage> {
               height: 150,
               width: 150,
               decoration: BoxDecoration(
-                  shape: BoxShape.circle, image: DecorationImage(image: NetworkImage("https://cdnstatic8.com/emporiodoeva.com.br/wp-content/uploads/2017/02/eva-azul-beb%C3%AA.jpg"))
-              ),
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://cdnstatic8.com/emporiodoeva.com.br/wp-content/uploads/2017/02/eva-azul-beb%C3%AA.jpg"))),
             ),
             //SizedBox(
             //width: 200,
@@ -68,11 +69,13 @@ class LoginTela extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
                 height: 50.0,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {},
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                  color: Colors.lightBlue,
+                  style: TextButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    backgroundColor: Colors.lightBlue,
+                  ),
                   child: Text(
                     "entrar",
                     style: TextStyle(color: Colors.white, fontSize: 22.0),
@@ -92,11 +95,13 @@ class LoginTela extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
                 height: 50.0,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {},
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                  color: Colors.blue,
+                  style: TextButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    backgroundColor: Colors.lightBlue,
+                  ),
                   child: Text(
                     "conectar com facebook",
                     style: TextStyle(color: Colors.white, fontSize: 22.0),
@@ -108,7 +113,7 @@ class LoginTela extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
                 height: 50.0,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {},
                     child: Text.rich(
                       TextSpan(
@@ -119,12 +124,10 @@ class LoginTela extends State<LoginPage> {
                               text: 'Cadastre-se!',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
-                              )
-                          ),
+                              )),
                         ],
                       ),
-                    )
-                ),
+                    )),
               ),
             ),
           ],

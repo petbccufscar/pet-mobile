@@ -23,7 +23,6 @@ class CadasPetianoPage extends State<CadasPetiano> {
         color: Colors.white,
         child: ListView(
           children: <Widget>[
-
             SizedBox(
               height: 20,
             ),
@@ -59,10 +58,8 @@ class CadasPetianoPage extends State<CadasPetiano> {
                     color: Colors.transparent,
                     child: TextFormField(
                       style: const TextStyle(
-
                           fontFamily: "Montserrat", fontSize: 15),
                       decoration: InputDecoration(
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -92,8 +89,6 @@ class CadasPetianoPage extends State<CadasPetiano> {
                   child: ElevatedButton(
                     child: Text('Criar'),
                     style: TextButton.styleFrom(
-                      primary: Color(0xffFFFFFF),
-                      onSurface: Colors.white,
                       shape: const BeveledRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                     ),

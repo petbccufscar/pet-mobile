@@ -22,7 +22,6 @@ class CriarGrupoPage extends State<CriarGrupo> {
         color: Colors.white,
         child: ListView(
           children: <Widget>[
-
             SizedBox(
               height: 20,
             ),
@@ -58,16 +57,13 @@ class CriarGrupoPage extends State<CriarGrupo> {
                     color: Colors.transparent,
                     child: TextFormField(
                       style: const TextStyle(
-
                           fontFamily: "Montserrat", fontSize: 15),
                       decoration: InputDecoration(
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           hintText: "Curso"),
                     ))),
-
             Padding(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
@@ -75,8 +71,6 @@ class CriarGrupoPage extends State<CriarGrupo> {
                   child: ElevatedButton(
                     child: Text('Criar'),
                     style: TextButton.styleFrom(
-                      primary: Color(0xffFFFFFF),
-                      onSurface: Colors.white,
                       shape: const BeveledRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                     ),
