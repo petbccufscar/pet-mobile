@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 import "package:pet_mobile/utils.dart";
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class AdicionarProjeto extends StatefulWidget {
   const AdicionarProjeto({Key? key}) : super(key: key);
@@ -194,7 +194,7 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
 
   @override
   Widget build(BuildContext context) {
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text("Adicionar Projeto"),
       body: Container(
         width: MediaQuery.of(context).size.width,

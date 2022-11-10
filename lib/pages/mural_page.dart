@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:pet_mobile/widgets/ballon.dart";
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class MuralProjeto extends StatefulWidget {
   const MuralProjeto({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
       value: _toDo[index]["finished"],
       onChanged: (c) {
         setState(
-              () {
+          () {
             _toDo[index]["finished"] = c;
           },
         );
@@ -74,7 +74,7 @@ class _MuralProjetoState extends State<MuralProjeto> {
   @override
   Widget build(BuildContext context) {
     // Variável para manipulação da altura de widgets baseada na altura da tela
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text(AppLocalizations.of(context)!.mural_page_title),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),

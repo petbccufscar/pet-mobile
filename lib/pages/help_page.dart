@@ -1,85 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pet_mobile/widgets/drop_down.dart';
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class HelpPage extends StatelessWidget {
   HelpPage({Key? key}) : super(key: key);
-
-  // Icones: setas para cima e para baixo.
-  final Icon iconOpened = const Icon(Icons.arrow_upward);
-  final Icon iconClosed = const Icon(Icons.arrow_downward);
 
   @override
   Widget build(BuildContext context) {
     // Textos para os cards. Como usamos o context para definir o locale, eles precisam ser construídos dentro do build.
     final List<_HelpInfo> helpInfoList = [
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_1, AppLocalizations.of(context)!.help_page_card_1_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_2, AppLocalizations.of(context)!.help_page_card_2_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_3, AppLocalizations.of(context)!.help_page_card_3_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_4, AppLocalizations.of(context)!.help_page_card_4_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_5, AppLocalizations.of(context)!.help_page_card_5_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_6, AppLocalizations.of(context)!.help_page_card_6_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_7, AppLocalizations.of(context)!.help_page_card_7_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_1,
+          AppLocalizations.of(context)!.help_page_card_1_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_2,
+          AppLocalizations.of(context)!.help_page_card_2_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_3,
+          AppLocalizations.of(context)!.help_page_card_3_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_4,
+          AppLocalizations.of(context)!.help_page_card_4_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_5,
+          AppLocalizations.of(context)!.help_page_card_5_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_6,
+          AppLocalizations.of(context)!.help_page_card_6_text),
+      _HelpInfo(AppLocalizations.of(context)!.help_page_card_7,
+          AppLocalizations.of(context)!.help_page_card_7_text),
     ];
 
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text(AppLocalizations.of(context)!.help_page_title),
       body: Container(
-        color: const Color.fromARGB(0xff, 0x61, 0xCF, 0xD7),
+        color: Color(0xFFDFECEB),
 
         // Lista com os cards de ajuda.
         child: ListView.separated(
-          itemBuilder: (BuildContext ctx, int index) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  top: index == 0 ? 20 : 0,
-                  left: 20,
-                  right: 20,
-                  bottom: index == helpInfoList.length - 1 ?  MediaQuery.of(context).size.height * 0.5 : 0
-              ),
-              child: DropDown(
-                title: Padding(
-                  padding: const EdgeInsets.all(10),
-
-                  // Título do card.
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black54,
-                      ),
-                      text: helpInfoList[index].title,
-                    ),
-                  ),
-                ),
-                iconOpened: iconOpened,
-                iconClosed: iconClosed,
-
-                // Texto do card.
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                    text: helpInfoList[index].info,
-                  ),
-                ),
-              ),
-            );
-          },
-
           // Separador entre os cards. Caixa invisível.
           separatorBuilder: (BuildContext ctx, int index) {
             return SizedBox(
               height: 10,
             );
           },
-
           itemCount: helpInfoList.length,
+          itemBuilder: (BuildContext ctx, int index) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: index == 0 ? 20 : 0,
+                  left: 20,
+                  right: 20,
+                  bottom: index == helpInfoList.length - 1
+                      ? MediaQuery.of(context).size.height * 0.5
+                      : 0),
+              child: ExpansionTile(
+                collapsedBackgroundColor: Color(0xFFF4F4F4),
+                backgroundColor: Color(0xFFF4F4F4),
+                title: Padding(
+                  padding: const EdgeInsets.all(10.0),
+
+                  // Título do card.
+                  child: RichText(
+                    text: TextSpan(
+                      text: helpInfoList[index].title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                ),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: RichText(
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(
+                        text: helpInfoList[index].info,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -92,4 +96,3 @@ class _HelpInfo {
   final String title;
   final String info;
 }
-

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class CriarGrupo extends StatefulWidget {
   const CriarGrupo({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class CriarGrupo extends StatefulWidget {
 class CriarGrupoPage extends State<CriarGrupo> {
   @override
   Widget build(BuildContext context) {
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text('Registrar Grupo'),
       body: Container(
         padding: EdgeInsets.only(
