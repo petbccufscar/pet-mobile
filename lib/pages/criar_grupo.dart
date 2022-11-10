@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import "package:flutter/material.dart";
 import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 
-class CadasPetiano extends StatefulWidget {
+class CriarGrupo extends StatefulWidget {
+  const CriarGrupo({Key? key}) : super(key: key);
+
   @override
-  CadasPetianoPage createState() => CadasPetianoPage();
+  CriarGrupoPage createState() => CriarGrupoPage();
 }
 
-class CadasPetianoPage extends State<CadasPetiano> {
-  bool _checkbox = false;
-
+class CriarGrupoPage extends State<CriarGrupo> {
   @override
   Widget build(BuildContext context) {
     return SideMenuScaffold(
-      appBarTitle: Text('Registrar Petiano'),
+      appBarTitle: Text('Registrar Grupo'),
       body: Container(
         padding: EdgeInsets.only(
           top: 60,
@@ -23,7 +22,6 @@ class CadasPetianoPage extends State<CadasPetiano> {
         color: Colors.white,
         child: ListView(
           children: <Widget>[
-
             SizedBox(
               height: 20,
             ),
@@ -51,7 +49,7 @@ class CadasPetianoPage extends State<CadasPetiano> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          hintText: "PET"),
+                          hintText: "Instituição"),
                     ))),
             Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -59,31 +57,12 @@ class CadasPetianoPage extends State<CadasPetiano> {
                     color: Colors.transparent,
                     child: TextFormField(
                       style: const TextStyle(
-
                           fontFamily: "Montserrat", fontSize: 15),
                       decoration: InputDecoration(
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           hintText: "Curso"),
-                    ))),
-            Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Material(
-                    color: Colors.transparent,
-                    child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        //DataInputFormatter()
-                      ],
-                      style: const TextStyle(
-                          fontFamily: "Montserrat", fontSize: 15),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          hintText: "Data de Inicio"),
                     ))),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
@@ -92,8 +71,6 @@ class CadasPetianoPage extends State<CadasPetiano> {
                   child: ElevatedButton(
                     child: Text('Criar'),
                     style: TextButton.styleFrom(
-                      primary: Color(0xffFFFFFF),
-                      onSurface: Colors.white,
                       shape: const BeveledRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                     ),

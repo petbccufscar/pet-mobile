@@ -55,60 +55,60 @@ class _EventEditingPageState extends State<EventEditingPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      leading: CloseButton(),
-      actions: buildEditingActions(),
-    ),
-    body: SingleChildScrollView(
-      padding: EdgeInsets.all(12),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            buildTitle(),
-            buildDateTimePickes(),
-            buildDescription(),
-            buildIsAllDay(),
-          ],
+        appBar: AppBar(
+          leading: CloseButton(),
+          actions: buildEditingActions(),
         ),
-      ),
-    ),
-    floatingActionButton: FloatingActionButton.extended(
-      icon: Icon(
-        Icons.palette,
-        color: Colors.white,
-      ),
-      label: Text('Escolher Cor'),
-      backgroundColor: Colors.blue,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              titlePadding: const EdgeInsets.all(2.0),
-              title: const Text('Escolher cor da tarefa'),
-              contentPadding: const EdgeInsets.all(2.0),
-              content: SingleChildScrollView(
-                child: BlockPicker(
-                  pickerColor: pickerColor,
-                  onColorChanged: changeColor,
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Salvar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(12),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                buildTitle(),
+                buildDateTimePickes(),
+                buildDescription(),
+                buildIsAllDay(),
               ],
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(
+            Icons.palette,
+            color: Colors.white,
+          ),
+          label: Text('Escolher Cor'),
+          backgroundColor: Colors.blue,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  titlePadding: const EdgeInsets.all(2.0),
+                  title: const Text('Escolher cor da tarefa'),
+                  contentPadding: const EdgeInsets.all(2.0),
+                  content: SingleChildScrollView(
+                    child: BlockPicker(
+                      pickerColor: pickerColor,
+                      onColorChanged: changeColor,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Salvar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
             );
           },
-        );
-      },
-    ),
-  );
+        ),
+      );
 
   // ValueChanged<Color> callback
   void changeColor(Color color) {
@@ -116,39 +116,38 @@ class _EventEditingPageState extends State<EventEditingPage> {
   }
 
   List<Widget> buildEditingActions() => [
-    ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        primary: Colors.transparent,
-        shadowColor: Colors.transparent,
-      ),
-      onPressed: saveForm,
-      icon: Icon(Icons.done),
-      label: Text('Salvar'),
-    ),
-  ];
+        ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            shadowColor: Colors.transparent,
+          ),
+          onPressed: saveForm,
+          icon: Icon(Icons.done),
+          label: Text('Salvar'),
+        ),
+      ];
 
   Widget buildTitle() => TextFormField(
-    style: TextStyle(fontSize: 24),
-    decoration: InputDecoration(
-      border: UnderlineInputBorder(),
-      hintText: 'Adicionar título',
-    ),
-    onFieldSubmitted: (_) => saveForm(),
-    validator: (title) =>
-    title != null && title.isEmpty ? 'Título não pode ser vazio' : null,
-    controller: titleController,
-  );
+        style: TextStyle(fontSize: 24),
+        decoration: InputDecoration(
+          border: UnderlineInputBorder(),
+          hintText: 'Adicionar título',
+        ),
+        onFieldSubmitted: (_) => saveForm(),
+        validator: (title) =>
+            title != null && title.isEmpty ? 'Título não pode ser vazio' : null,
+        controller: titleController,
+      );
 
   Widget buildDescription() => TextFormField(
-    style: TextStyle(fontSize: 24),
-    decoration: InputDecoration(
-      border: UnderlineInputBorder(),
-      hintText: 'Descrição',
-    ),
-    onFieldSubmitted: (_) => saveForm(),
-    validator: null,
-    controller: descriptionController,
-  );
+        style: TextStyle(fontSize: 24),
+        decoration: InputDecoration(
+          border: UnderlineInputBorder(),
+          hintText: 'Descrição',
+        ),
+        onFieldSubmitted: (_) => saveForm(),
+        validator: null,
+        controller: descriptionController,
+      );
 
   /* Widget pickColor() => Column(
           /* header: 'Escolher Cor', */
@@ -166,51 +165,51 @@ class _EventEditingPageState extends State<EventEditingPage> {
           ]); */
 
   Widget pickColor() => buildHeader(
-    header: 'Escolher Cor',
-    child: AlertDialog(
-      title: const Text('Pick a color!'),
-      content: SingleChildScrollView(
-        child: BlockPicker(
-          pickerColor: pickerColor,
-          onColorChanged: changeColor,
+        header: 'Escolher Cor',
+        child: AlertDialog(
+          title: const Text('Pick a color!'),
+          content: SingleChildScrollView(
+            child: BlockPicker(
+              pickerColor: pickerColor,
+              onColorChanged: changeColor,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Got it'),
+              onPressed: () {
+                setState(() => currentColor = pickerColor);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Got it'),
-          onPressed: () {
-            setState(() => currentColor = pickerColor);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget buildDateTimePickes() => Column(
-    children: [buildFrom(), buildTo()],
-  );
+        children: [buildFrom(), buildTo()],
+      );
 
   Widget buildFrom() => buildHeader(
-    header: 'Começo',
-    child: Row(
-      children: [
-        Expanded(
-          flex: 2, // Faz o pegar 66% da tela
-          child: buildDropdownField(
-            text: Utils.toDate(fromDate),
-            onClicked: () => pickFromDateTime(pickDate: true),
-          ),
+        header: 'Começo',
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2, // Faz o pegar 66% da tela
+              child: buildDropdownField(
+                text: Utils.toDate(fromDate),
+                onClicked: () => pickFromDateTime(pickDate: true),
+              ),
+            ),
+            Expanded(
+              child: buildDropdownField(
+                text: Utils.toTime(fromDate),
+                onClicked: () => pickFromDateTime(pickDate: false),
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          child: buildDropdownField(
-            text: Utils.toTime(fromDate),
-            onClicked: () => pickFromDateTime(pickDate: false),
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget buildTo() => buildHeader(
       header: 'Fim',
@@ -274,10 +273,10 @@ class _EventEditingPageState extends State<EventEditingPage> {
   }
 
   Future<DateTime?> pickDateTime(
-      DateTime initialDate, {
-        required bool pickDate,
-        DateTime? firstDate,
-      }) async {
+    DateTime initialDate, {
+    required bool pickDate,
+    DateTime? firstDate,
+  }) async {
     if (pickDate) {
       final date = await showDatePicker(
         context: context,
@@ -317,26 +316,26 @@ class _EventEditingPageState extends State<EventEditingPage> {
   }
 
   Widget buildIsAllDay() => Row(
-    children: <Widget>[
-      SizedBox(
-        width: 10,
-      ), //SizedBox
-      Text(
-        'Evento é o dia todo: ',
-        style: TextStyle(fontSize: 17.0),
-      ), //Text
-      SizedBox(width: 10), //SizedBox
-      /** Checkbox Widget **/
-      Checkbox(
-        value: isAllDayMark,
-        onChanged: (value) {
-          setState(() {
-            isAllDayMark = value as bool;
-          });
-        },
-      ), //Checkbox
-    ], //<Widget>[]
-  );
+        children: <Widget>[
+          SizedBox(
+            width: 10,
+          ), //SizedBox
+          Text(
+            'Evento é o dia todo: ',
+            style: TextStyle(fontSize: 17.0),
+          ), //Text
+          SizedBox(width: 10), //SizedBox
+          /** Checkbox Widget **/
+          Checkbox(
+            value: isAllDayMark,
+            onChanged: (value) {
+              setState(() {
+                isAllDayMark = value as bool;
+              });
+            },
+          ), //Checkbox
+        ], //<Widget>[]
+      );
   Widget buildDropdownField({
     required String text,
     required VoidCallback onClicked,

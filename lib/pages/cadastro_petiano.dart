@@ -1,18 +1,19 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
 
-class CriarGrupo extends StatefulWidget {
-  const CriarGrupo({Key? key}) : super(key: key);
-
+class CadasPetiano extends StatefulWidget {
   @override
-  CriarGrupoPage createState() => CriarGrupoPage();
+  CadasPetianoPage createState() => CadasPetianoPage();
 }
 
-class CriarGrupoPage extends State<CriarGrupo> {
+class CadasPetianoPage extends State<CadasPetiano> {
+  bool _checkbox = false;
+
   @override
   Widget build(BuildContext context) {
     return SideMenuScaffold(
-      appBarTitle: Text('Registrar Grupo'),
+      appBarTitle: Text('Registrar Petiano'),
       body: Container(
         padding: EdgeInsets.only(
           top: 60,
@@ -22,7 +23,6 @@ class CriarGrupoPage extends State<CriarGrupo> {
         color: Colors.white,
         child: ListView(
           children: <Widget>[
-
             SizedBox(
               height: 20,
             ),
@@ -50,7 +50,7 @@ class CriarGrupoPage extends State<CriarGrupo> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          hintText: "Instituição"),
+                          hintText: "PET"),
                     ))),
             Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -58,16 +58,30 @@ class CriarGrupoPage extends State<CriarGrupo> {
                     color: Colors.transparent,
                     child: TextFormField(
                       style: const TextStyle(
-
                           fontFamily: "Montserrat", fontSize: 15),
                       decoration: InputDecoration(
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           hintText: "Curso"),
                     ))),
-
+            Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Material(
+                    color: Colors.transparent,
+                    child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        //DataInputFormatter()
+                      ],
+                      style: const TextStyle(
+                          fontFamily: "Montserrat", fontSize: 15),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          hintText: "Data de Inicio"),
+                    ))),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
@@ -75,8 +89,6 @@ class CriarGrupoPage extends State<CriarGrupo> {
                   child: ElevatedButton(
                     child: Text('Criar'),
                     style: TextButton.styleFrom(
-                      primary: Color(0xffFFFFFF),
-                      onSurface: Colors.white,
                       shape: const BeveledRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                     ),
