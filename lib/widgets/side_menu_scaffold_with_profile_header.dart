@@ -127,7 +127,8 @@ class __SideMenuState extends State<_SideMenu> {
             iconData: Icons.note_alt_rounded,
             text: 'Atividades',
             isSelected: _currentItemSelected == NavigationItem.activities,
-            onTap: () {},
+            onTap: () =>
+                _navigateTo(context, '/activities', NavigationItem.activities),
           ),
           _SideMenuItem(
             iconData: Icons.person,
