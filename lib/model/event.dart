@@ -8,17 +8,17 @@ class Event {
   final Color _backgroundColor;
   final bool _isAllDay;
 
-  String get getTitle => this._title;
+  String get title => this._title;
 
-  String get getDescription => this._description;
+  String get description => this._description;
 
-  DateTime get getFrom => this._from;
+  DateTime get from => this._from;
 
-  DateTime get getTo => this._to;
+  DateTime get to => this._to;
 
-  Color get getBackgroundColor => this._backgroundColor;
+  Color get backgroundColor => this._backgroundColor;
 
-  bool get getIsAllDay => this._isAllDay;
+  bool get isAllDay => this._isAllDay;
 
   const Event({
     required String title,

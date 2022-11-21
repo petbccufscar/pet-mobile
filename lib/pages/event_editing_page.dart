@@ -38,12 +38,12 @@ class _EventEditingPageState extends State<EventEditingPage> {
     } else {
       final event = widget.event!;
 
-      titleController.text = event.getTitle;
-      descriptionController.text = event.getDescription;
-      fromDate = event.getFrom;
-      toDate = event.getTo;
-      currentColor = event.getBackgroundColor;
-      isAllDayMark = event.getIsAllDay;
+      titleController.text = event.title;
+      descriptionController.text = event.description;
+      fromDate = event.from;
+      toDate = event.to;
+      currentColor = event.backgroundColor;
+      isAllDayMark = event.isAllDay;
     }
   }
 
@@ -193,12 +193,14 @@ class _EventEditingPageState extends State<EventEditingPage> {
                 onClicked: onDateClicked,
               ),
             ),
-            Expanded(
-              child: buildDropdownField(
-                text: Utils.toTime(date),
-                onClicked: onTimeClicked,
-              ),
-            )
+            isAllDayMark
+                ? SizedBox()
+                : Expanded(
+                    child: buildDropdownField(
+                      text: Utils.toTime(date),
+                      onClicked: onTimeClicked,
+                    ),
+                  )
           ],
         ),
       );
@@ -229,6 +231,14 @@ class _EventEditingPageState extends State<EventEditingPage> {
             onChanged: (value) {
               setState(() {
                 isAllDayMark = value as bool;
+
+                if (isAllDayMark) {
+                  DateTime now = DateTime.now();
+                  var allDayDate = DateTime(now.year, now.month, now.day);
+
+                  fromDate = allDayDate;
+                  toDate = allDayDate;
+                }
               });
             },
           ), //Checkbox

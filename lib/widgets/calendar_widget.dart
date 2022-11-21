@@ -52,6 +52,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             List<Event> dayEvents =
                 provider.getEventsOfSelectedDate(details.date!);
 
+            dayEvents.sort(
+              (a, b) {
+                return a.from.compareTo(b.from);
+              },
+            );
+
             if (dayEvents.isEmpty) {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -74,51 +80,57 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         shrinkWrap: true,
                         itemCount: dayEvents.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => EventEditingPage(
-                                        event: dayEvents[index]),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                color: Colors.transparent,
-                                elevation: 0,
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 24.0,
-                                      ),
-                                      Text(
-                                        '${Utils.toTime(dayEvents[index].getFrom)}',
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      VerticalDivider(
-                                        thickness: 2,
-                                        color:
-                                            dayEvents[index].getBackgroundColor,
-                                      ),
-                                      Column(
+                          return InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EventEditingPage(event: dayEvents[index]),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 24.0,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: dayEvents[index].isAllDay
+                                          ? SizedBox()
+                                          : Text(
+                                              '${Utils.toTime(dayEvents[index].from)}',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                    ),
+                                    VerticalDivider(
+                                      thickness: 2,
+                                      color: dayEvents[index].backgroundColor,
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '${dayEvents[index].getTitle}',
+                                            '${dayEvents[index].title}',
                                             style: TextStyle(fontSize: 18),
                                           ),
                                           Text(
-                                            '${Utils.toTime(dayEvents[index].getFrom)} - ${Utils.toTime(dayEvents[index].getTo)}',
+                                            dayEvents[index].isAllDay
+                                                ? 'Todo o dia'
+                                                : '${Utils.toTime(dayEvents[index].from)} - ${Utils.toTime(dayEvents[index].to)}',
                                             style: TextStyle(fontSize: 18),
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -130,7 +142,15 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text('Cancelar')),
-                      TextButton(onPressed: () {}, child: Text('Adicionar'))
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EventEditingPage(),
+                              ),
+                            );
+                          },
+                          child: Text('Adicionar'))
                     ],
                   );
                 },
