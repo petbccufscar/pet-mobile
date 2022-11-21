@@ -10,11 +10,12 @@ class EventProvider extends ChangeNotifier {
 
   DateTime get selectedDate => _selectedDate;
 
+  void setDate(DateTime date) => _selectedDate = date;
+
   List<Event> getEventsOfSelectedDate(DateTime selectedDate) {
     return _events
-        .where((event) =>
-            Utils.toDate(event.from) == Utils.toDate(selectedDate) ||
-            Utils.toDate(event.to) == Utils.toDate(selectedDate))
+        .where(
+            (event) => Utils.toDate(event.from) == Utils.toDate(selectedDate))
         .toList();
   }
 

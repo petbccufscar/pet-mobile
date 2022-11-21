@@ -49,6 +49,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           showNavigationArrow: true,
           onTap: (details) {
             final provider = Provider.of<EventProvider>(context, listen: false);
+            provider.setDate(details.date!);
             List<Event> dayEvents =
                 provider.getEventsOfSelectedDate(details.date!);
 

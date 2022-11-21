@@ -33,8 +33,21 @@ class _EventEditingPageState extends State<EventEditingPage> {
     super.initState();
 
     if (widget.event == null) {
-      fromDate = DateTime.now();
-      toDate = DateTime.now().add(Duration(hours: 2));
+      final provider = Provider.of<EventProvider>(context, listen: false);
+      final now = DateTime.now();
+      final timeFrom;
+      final timeTo;
+
+      if (now.day != provider.selectedDate.day) {
+        timeFrom = Duration(hours: provider.selectedDate.hour + 8);
+        timeTo = Duration(hours: provider.selectedDate.hour + 10);
+      } else {
+        timeFrom = Duration(hours: now.hour, minutes: now.minute);
+        timeTo = Duration(hours: now.hour + 2, minutes: now.minute);
+      }
+
+      fromDate = provider.selectedDate.add(timeFrom);
+      toDate = provider.selectedDate.add(timeTo);
     } else {
       final event = widget.event!;
 
