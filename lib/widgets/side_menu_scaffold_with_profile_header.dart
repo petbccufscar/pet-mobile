@@ -61,7 +61,6 @@ class _SideMenu extends StatefulWidget {
 }
 
 NavigationItem _currentItemSelected = NavigationItem.home;
-int? teste;
 
 class __SideMenuState extends State<_SideMenu> {
   _navigateTo(BuildContext context, String route, NavigationItem item) {

@@ -38,11 +38,12 @@ class _EventEditingPageState extends State<EventEditingPage> {
     } else {
       final event = widget.event!;
 
-      titleController.text = event.title;
-      descriptionController.text = event.description;
-      fromDate = event.from;
-      toDate = event.to;
-      isAllDayMark = event.isAllDay;
+      titleController.text = event.getTitle;
+      descriptionController.text = event.getDescription;
+      fromDate = event.getFrom;
+      toDate = event.getTo;
+      currentColor = event.getBackgroundColor;
+      isAllDayMark = event.getIsAllDay;
     }
   }
 
@@ -66,9 +67,27 @@ class _EventEditingPageState extends State<EventEditingPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                buildTitle(),
-                buildDateTimePickes(),
-                buildDescription(),
+                buildTextInput(
+                  hint: 'Adicionar Título',
+                  controller: titleController,
+                  validator: (title) => title != null && title.isEmpty
+                      ? 'Título não pode ser vazio'
+                      : null,
+                ),
+                buildDateTimeInput(
+                    headerText: 'Começo',
+                    date: fromDate,
+                    onDateClicked: () => pickFromDateTime(pickDate: true),
+                    onTimeClicked: () => pickFromDateTime(pickDate: false)),
+                buildDateTimeInput(
+                    headerText: 'Fim',
+                    date: toDate,
+                    onDateClicked: () => pickToDateTime(pickDate: true),
+                    onTimeClicked: () => pickToDateTime(pickDate: false)),
+                buildTextInput(
+                    hint: 'Descrição',
+                    controller: descriptionController,
+                    validator: null),
                 buildIsAllDay(),
               ],
             ),
@@ -126,43 +145,95 @@ class _EventEditingPageState extends State<EventEditingPage> {
         ),
       ];
 
-  Widget buildTitle() => TextFormField(
+  Widget buildHeader({
+    required String header,
+    required Widget child,
+  }) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            header,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          child,
+        ],
+      );
+
+  Widget buildTextInput(
+          {required String hint,
+          required TextEditingController controller,
+          required String? Function(String?)? validator}) =>
+      TextFormField(
         style: TextStyle(fontSize: 24),
         decoration: InputDecoration(
           border: UnderlineInputBorder(),
-          hintText: 'Adicionar título',
+          hintText: hint,
         ),
         onFieldSubmitted: (_) => saveForm(),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'Título não pode ser vazio' : null,
-        controller: titleController,
+        validator: validator,
+        controller: controller,
       );
 
-  Widget buildDescription() => TextFormField(
-        style: TextStyle(fontSize: 24),
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(),
-          hintText: 'Descrição',
-        ),
-        onFieldSubmitted: (_) => saveForm(),
-        validator: null,
-        controller: descriptionController,
-      );
-
-  /* Widget pickColor() => Column(
-          /* header: 'Escolher Cor', */
+  Widget buildDateTimeInput(
+          {required String headerText,
+          required DateTime date,
+          required VoidCallback onDateClicked,
+          required VoidCallback onTimeClicked}) =>
+      buildHeader(
+        header: headerText,
+        child: Row(
           children: [
-            Text(
-              'Escolher Cor',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            Expanded(
+              flex: 2, // Faz o pegar 66% da tela
+              child: buildDropdownField(
+                text: Utils.toFullDate(date),
+                onClicked: onDateClicked,
               ),
             ),
-            BlockPicker(
-              pickerColor: pickedColor,
-              onColorChanged: changeColor,
-            ),
-          ]); */
+            Expanded(
+              child: buildDropdownField(
+                text: Utils.toTime(date),
+                onClicked: onTimeClicked,
+              ),
+            )
+          ],
+        ),
+      );
+
+  Widget buildDropdownField({
+    required String text,
+    required VoidCallback onClicked,
+  }) =>
+      ListTile(
+        title: Text(text),
+        trailing: Icon(Icons.arrow_drop_down),
+        onTap: onClicked,
+      );
+
+  Widget buildIsAllDay() => Row(
+        children: <Widget>[
+          SizedBox(
+            width: 10,
+          ), //SizedBox
+          Text(
+            'Evento é o dia todo: ',
+            style: TextStyle(fontSize: 17.0),
+          ), //Text
+          SizedBox(width: 10), //SizedBox
+          /** Checkbox Widget **/
+          Checkbox(
+            value: isAllDayMark,
+            onChanged: (value) {
+              setState(() {
+                isAllDayMark = value as bool;
+              });
+            },
+          ), //Checkbox
+        ], //<Widget>[]
+      );
 
   Widget pickColor() => buildHeader(
         header: 'Escolher Cor',
@@ -185,51 +256,6 @@ class _EventEditingPageState extends State<EventEditingPage> {
           ],
         ),
       );
-
-  Widget buildDateTimePickes() => Column(
-        children: [buildFrom(), buildTo()],
-      );
-
-  Widget buildFrom() => buildHeader(
-        header: 'Começo',
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2, // Faz o pegar 66% da tela
-              child: buildDropdownField(
-                text: Utils.toDate(fromDate),
-                onClicked: () => pickFromDateTime(pickDate: true),
-              ),
-            ),
-            Expanded(
-              child: buildDropdownField(
-                text: Utils.toTime(fromDate),
-                onClicked: () => pickFromDateTime(pickDate: false),
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget buildTo() => buildHeader(
-      header: 'Fim',
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2, // Faz o pegar 66% da tela
-            child: buildDropdownField(
-              text: Utils.toDate(toDate),
-              onClicked: () => pickToDateTime(pickDate: true),
-            ),
-          ),
-          Expanded(
-            child: buildDropdownField(
-              text: Utils.toTime(toDate),
-              onClicked: () => pickToDateTime(pickDate: false),
-            ),
-          )
-        ],
-      ));
 
   Future pickFromDateTime({required bool pickDate}) async {
     final date = await pickDateTime(
@@ -314,54 +340,6 @@ class _EventEditingPageState extends State<EventEditingPage> {
       return date.add(time);
     }
   }
-
-  Widget buildIsAllDay() => Row(
-        children: <Widget>[
-          SizedBox(
-            width: 10,
-          ), //SizedBox
-          Text(
-            'Evento é o dia todo: ',
-            style: TextStyle(fontSize: 17.0),
-          ), //Text
-          SizedBox(width: 10), //SizedBox
-          /** Checkbox Widget **/
-          Checkbox(
-            value: isAllDayMark,
-            onChanged: (value) {
-              setState(() {
-                isAllDayMark = value as bool;
-              });
-            },
-          ), //Checkbox
-        ], //<Widget>[]
-      );
-  Widget buildDropdownField({
-    required String text,
-    required VoidCallback onClicked,
-  }) =>
-      ListTile(
-        title: Text(text),
-        trailing: Icon(Icons.arrow_drop_down),
-        onTap: onClicked,
-      );
-
-  Widget buildHeader({
-    required String header,
-    required Widget child,
-  }) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            header,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          child,
-        ],
-      );
 
   Future saveForm() async {
     final isValid = _formKey.currentState!.validate();

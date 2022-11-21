@@ -8,8 +8,14 @@ class Utils {
     return '$date $time';
   }
 
-  static String toDate(DateTime dateTime) {
+  static String toFullDate(DateTime dateTime) {
     final date = DateFormat.yMMMEd().format(dateTime);
+
+    return '$date';
+  }
+
+  static String toDate(DateTime dateTime) {
+    final date = DateFormat.yMMMMd().format(dateTime);
 
     return '$date';
   }

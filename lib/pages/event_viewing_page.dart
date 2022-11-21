@@ -15,39 +15,39 @@ class EventViewingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      leading: CloseButton(),
-      actions: buildViewingActions(context, event),
-    ),
-    body: ListView(
-      padding: EdgeInsets.all(32),
-      children: <Widget>[
-        buildDateTime(event),
-        SizedBox(
-          height: 32,
+        appBar: AppBar(
+          leading: CloseButton(),
+          actions: buildViewingActions(context, event),
         ),
-        Text(
-          event.title,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        body: ListView(
+          padding: EdgeInsets.all(32),
+          children: <Widget>[
+            buildDateTime(event),
+            SizedBox(
+              height: 32,
+            ),
+            Text(
+              event.getTitle,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Text(
+              event.getDescription,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(
-          height: 24,
-        ),
-        Text(
-          event.description,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget buildDateTime(Event event) {
     return Column(
       children: [
-        buildDate(event.isAllDay ? 'Dia todo' : 'De', event.from),
-        if (!event.isAllDay) buildDate('Até', event.to),
+        buildDate(event.getIsAllDay ? 'Dia todo' : 'De', event.getFrom),
+        if (!event.getIsAllDay) buildDate('Até', event.getTo),
       ],
     );
   }
@@ -68,7 +68,7 @@ class EventViewingPage extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            Utils.toDate(date),
+            Utils.toFullDate(date),
             style: TextStyle(
               fontSize: 18,
             ),
@@ -79,23 +79,23 @@ class EventViewingPage extends StatelessWidget {
   }
 
   List<Widget> buildViewingActions(BuildContext context, Event event) => [
-    IconButton(
-      icon: Icon(Icons.edit),
-      onPressed: () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => EventEditingPage(
-            event: event,
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => EventEditingPage(
+                event: event,
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-    IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () {
-          final provider =
-          Provider.of<EventProvider>(context, listen: false);
+        IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              final provider =
+                  Provider.of<EventProvider>(context, listen: false);
 
-          provider.deleteEvent(event);
-        }),
-  ];
+              provider.deleteEvent(event);
+            }),
+      ];
 }

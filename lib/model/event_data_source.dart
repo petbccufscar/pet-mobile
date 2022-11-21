@@ -10,19 +10,19 @@ class EventDataSource extends CalendarDataSource {
   Event getEvent(int index) => appointments![index] as Event;
 
   @override
-  DateTime getStartTime(int index) => getEvent(index).from;
+  DateTime getStartTime(int index) => getEvent(index).getFrom;
 
   @override
-  DateTime getEndTime(int index) => getEvent(index).to;
+  DateTime getEndTime(int index) => getEvent(index).getTo;
 
   @override
-  String getSubject(int index) => getEvent(index).title;
+  String getSubject(int index) => getEvent(index).getTitle;
 
-  String getDescription(int index) => getEvent(index).description;
-
-  @override
-  Color getColor(int index) => getEvent(index).backgroundColor;
+  String getDescription(int index) => getEvent(index).getDescription;
 
   @override
-  bool isAllDay(int index) => getEvent(index).isAllDay;
+  Color getColor(int index) => getEvent(index).getBackgroundColor;
+
+  @override
+  bool isAllDay(int index) => getEvent(index).getIsAllDay;
 }
