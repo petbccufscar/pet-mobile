@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class MeetPage extends StatefulWidget {
   @override
@@ -9,7 +9,7 @@ class MeetPage extends StatefulWidget {
 class _MeetPageState extends State<MeetPage> {
   @override
   Widget build(BuildContext context) {
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text('Meet Page'),
       body: SingleChildScrollView(
         child: Padding(
