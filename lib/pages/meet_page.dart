@@ -8,6 +8,9 @@ class MeetPage extends StatefulWidget {
 }
 
 class _MeetPageState extends State<MeetPage> {
+  final dropValue = ValueNotifier('');
+  final dropOptions = ['Software Quântico', 'PET Mobile', 'Marketing'];
+
   TextEditingController dateController = TextEditingController();
 
   @override
@@ -108,6 +111,32 @@ class _MeetPageState extends State<MeetPage> {
                         }
                       },
                     ))),
+            Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Material(
+                    color: Colors.transparent,
+                    child: ValueListenableBuilder(
+                        valueListenable: dropValue,
+                        builder: (BuildContext context, String value, _) {
+                          return DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                hintText: 'Selecione o Projeto',
+                                hintStyle: TextStyle(
+                                    fontFamily: "Montserrat", fontSize: 15)),
+                            value: (value.isEmpty) ? null : value,
+                            onChanged: (escolha) =>
+                                dropValue.value = escolha.toString(),
+                            items: dropOptions
+                                .map((op) => DropdownMenuItem(
+                                      value: op,
+                                      child: Text(op),
+                                    ))
+                                .toList(),
+                          );
+                        }))),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Container(
