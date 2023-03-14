@@ -9,7 +9,7 @@ class Utils {
   }
 
   static String toFullDate(DateTime dateTime) {
-    final date = DateFormat.yMMMEd().format(dateTime);
+    final date = DateFormat.MMMEd("pt_BR").format(dateTime);
 
     return '$date';
   }
@@ -24,5 +24,11 @@ class Utils {
     final time = DateFormat.Hm().format(dateTime);
 
     return '$time';
+  }
+
+  static String toAppointmentFormat(DateTime dateTime) {
+    final formatted = DateFormat("d 'de' MMM HH:MM", "pt_BR").format(dateTime);
+
+    return formatted;
   }
 }

@@ -115,34 +115,51 @@ class _CalendarWidgetState extends State<CalendarWidget>
       context: context,
       builder: (context) {
         return AlertDialog(
-            contentPadding: EdgeInsets.symmetric(vertical: 24.0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0)),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancelar')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => EventEditingPage(),
-                      ),
-                    );
-                  },
-                  child: Text('Adicionar'))
-            ],
-            title: Text(
-              '${selectedDate.day}, ${DateFormat(DateFormat.WEEKDAY, 'pt_Br').format(selectedDate)}',
-            ),
-            content: _buildAppointmentsCardList(dayEvents));
+          title: _buildDialogTitle(selectedDate),
+          content: _buildAppointmentsCardList(dayEvents),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancelar')),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EventEditingPage(),
+                    ),
+                  );
+                },
+                child: Text('Adicionar'))
+          ],
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        );
       },
+    );
+  }
+
+  Widget _buildDialogTitle(DateTime selectedDate) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${selectedDate.day}, ${DateFormat(DateFormat.WEEKDAY, 'pt_Br').format(selectedDate)}',
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 1,
+        ),
+      ],
     );
   }
 
   Widget _buildAppointmentsCardList(List<Event> dayEvents) {
     return Container(
-      width: double.minPositive,
+      height: MediaQuery.of(context).size.height / 3.0,
+      width: MediaQuery.of(context).size.width,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: dayEvents.length,
@@ -160,43 +177,45 @@ class _CalendarWidgetState extends State<CalendarWidget>
               color: Colors.transparent,
               elevation: 0,
               child: IntrinsicHeight(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 24.0,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: dayEvents[index].isAllDay
-                          ? SizedBox()
-                          : Text(
-                              '${Utils.toTime(dayEvents[index].from)}',
-                              style: TextStyle(fontSize: 18),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      index == 0
+                          ? Icon(
+                              Icons.calendar_month,
+                              size: 24.0,
+                            )
+                          : SizedBox(
+                              width: 24.0,
                             ),
-                    ),
-                    VerticalDivider(
-                      thickness: 2,
-                      color: dayEvents[index].backgroundColor,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${dayEvents[index].title}',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Text(
-                            dayEvents[index].isAllDay
-                                ? 'Todo o dia'
-                                : '${Utils.toTime(dayEvents[index].from)} - ${Utils.toTime(dayEvents[index].to)}',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
+                      VerticalDivider(
+                        thickness: 2,
+                        color: dayEvents[index].backgroundColor,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${dayEvents[index].title}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              dayEvents[index].isAllDay
+                                  ? 'Todo o dia'
+                                  : '${Utils.toAppointmentFormat(dayEvents[index].from)} - ${Utils.toAppointmentFormat(dayEvents[index].to)}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
