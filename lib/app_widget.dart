@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/pages/activities_page.dart';
+import 'package:pet_mobile/pages/descricao_projeto_page.dart';
 import 'package:pet_mobile/provider/event_provider.dart';
 import 'package:provider/provider.dart';
 import 'pages/meet_page.dart';
@@ -31,27 +32,27 @@ class AppWidget extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        onGenerateTitle: (BuildContext context) =>
-            AppLocalizations.of(context)!.title,
-        theme: AppTheme.theme,
-        // i18n
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        // Rotas
-        initialRoute: '/',
-        routes: {
-          '/': (context) => HomePage(),
-          '/help': (context) => HelpPage(),
-          '/calendar': (context) => CalendarPage(),
-          '/register/petiano': (context) => CadasPetiano(),
-          '/register/group': (context) => CriarGrupo(),
-          '/meet': (context) => MeetPage(),
-          '/login': (context) => LoginPage(),
-          '/projects': (context) => MuralProjeto(),
-          '/register/project': (context) => AdicionarProjeto(),
-          '/activities': (context) => Atividade(),
-        },
-      ),
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context)!.title,
+          theme: AppTheme.theme,
+          // i18n
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          // Rotas
+          initialRoute: '/',
+          routes: {
+            '/': (context) => HomePage(),
+            '/help': (context) => HelpPage(),
+            '/calendar': (context) => CalendarPage(),
+            '/register/petiano': (context) => CadasPetiano(),
+            '/register/group': (context) => CriarGrupo(),
+            '/meet': (context) => MeetPage(),
+            '/login': (context) => LoginPage(),
+            '/projects': (context) => MuralProjeto(),
+            '/register/project': (context) => AdicionarProjeto(),
+            '/activities': (context) => Atividade(),
+            '/project/description': (context) => DescricaoProjeto(),
+          }),
     );
   }
 }
