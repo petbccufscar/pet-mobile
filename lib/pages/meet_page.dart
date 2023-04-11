@@ -22,7 +22,7 @@ class _MeetPageState extends State<MeetPage> {
   @override
   Widget build(BuildContext context) {
     return SideMenuScaffoldWithProfileHeader(
-      appBarTitle: Text('Meet Page'),
+      appBarTitle: Text('Marcar Reunião'),
       body: Container(
         padding: EdgeInsets.only(
           top: 60,
@@ -111,6 +111,28 @@ class _MeetPageState extends State<MeetPage> {
                         }
                       },
                     ))),
+            Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Material(
+                  color: Colors.transparent,
+                  child: TextFormField(
+                    style:
+                        const TextStyle(fontFamily: "Montserrat", fontSize: 15),
+                    readOnly: true,
+                    keyboardType: TextInputType.none,
+                    //controller: descricao,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        hintText: 'Horário',
+                        prefixIcon: Icon(Icons.access_time_outlined)),
+                    onTap: () async {
+                      await showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
+                    },
+                  ),
+                )),
             Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Material(
