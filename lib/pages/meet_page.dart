@@ -11,7 +11,11 @@ class _MeetPageState extends State<MeetPage> {
   final dropValue = ValueNotifier('');
   final dropOptions = ['Software Quântico', 'PET Mobile', 'Marketing'];
 
+  final _members = ['Augusto', 'Bruno', 'Caio'];
+  List<String> _selectedMemb = [];
+
   TextEditingController dateController = TextEditingController();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
   @override
   void initState() {
@@ -128,9 +132,19 @@ class _MeetPageState extends State<MeetPage> {
                         hintText: 'Horário',
                         prefixIcon: Icon(Icons.access_time_outlined)),
                     onTap: () async {
-                      await showTimePicker(
-                          context: context, initialTime: TimeOfDay.now());
+                      final selectedTime = await showTimePicker(
+                        context: context,
+                        initialTime: _selectedTime,
+                      );
+
+                      if (selectedTime != null) {
+                        setState(() {
+                          _selectedTime = selectedTime;
+                        });
+                      }
                     },
+                    controller: TextEditingController(
+                        text: _selectedTime.format(context)),
                   ),
                 )),
             Padding(
