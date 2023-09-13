@@ -142,7 +142,7 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
   Widget buildFrom() => buildHeader(
         header: 'Data de início',
         child: buildDropdownField(
-          text: Utils.toDate(fromDate),
+          text: Utils.toFullDate(fromDate),
           onClicked: () => pickFromDateTime(pickDate: true),
         ),
       );
@@ -150,7 +150,7 @@ class _AdicionarProjetoState extends State<AdicionarProjeto> {
   Widget buildTo() => buildHeader(
         header: 'Data de fim',
         child: buildDropdownField(
-          text: Utils.toDate(toDate),
+          text: Utils.toFullDate(toDate),
           onClicked: () => pickToDateTime(pickDate: true),
         ),
       );
