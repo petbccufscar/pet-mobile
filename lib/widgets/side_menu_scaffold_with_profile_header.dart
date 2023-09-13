@@ -9,10 +9,12 @@ class SideMenuScaffoldWithProfileHeader extends StatelessWidget {
     required this.body,
     this.appBarActions,
     this.floatingActionButton,
+    this.appBarElevation,
   }) : super(key: key);
 
   final Widget appBarTitle;
   final List<Widget>? appBarActions;
+  final double? appBarElevation;
 
   final Widget body;
   final Widget? floatingActionButton;
@@ -44,6 +46,7 @@ class SideMenuScaffoldWithProfileHeader extends StatelessWidget {
         centerTitle: true,
         title: appBarTitle,
         actions: appBarActions,
+        elevation: appBarElevation,
       ),
       drawer: _SideMenu(closeDrawer: closeDrawer),
       body: body,

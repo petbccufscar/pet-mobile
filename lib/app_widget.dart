@@ -11,6 +11,7 @@ import 'package:pet_mobile/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
 import 'package:pet_mobile/pages/adicionar_projeto_page.dart';
+import 'package:pet_mobile/pages/projectsList.dart';
 
 import 'pages/login_page.dart';
 import 'config/themes/theme.dart';
@@ -47,7 +48,7 @@ class AppWidget extends StatelessWidget {
           '/register/group': (context) => CriarGrupo(),
           '/meet': (context) => MeetPage(),
           '/login': (context) => LoginPage(),
-          '/projects': (context) => MuralProjeto(),
+          '/projects': (context) => ProjectsList(),
           '/register/project': (context) => AdicionarProjeto(),
           '/activities': (context) => Atividade(),
         },
