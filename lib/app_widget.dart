@@ -12,6 +12,7 @@ import 'package:pet_mobile/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
 import 'package:pet_mobile/pages/adicionar_projeto_page.dart';
+import 'package:pet_mobile/pages/marcar_atividades.dart';
 import 'package:pet_mobile/pages/projectsList.dart';
 
 import 'pages/login_page.dart';
@@ -53,6 +54,7 @@ class AppWidget extends StatelessWidget {
             '/register/project': (context) => AdicionarProjeto(),
             '/activities': (context) => Atividade(),
             '/project/description': (context) => DescricaoProjeto(),
+            '/adicionarProjeto': (context) => MarcarAtividadePage(),
           }),
     );
   }
