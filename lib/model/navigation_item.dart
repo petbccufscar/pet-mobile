@@ -10,4 +10,5 @@ enum NavigationItem {
   addPetiano,
   addGroup,
   login,
+  descProj
 }
