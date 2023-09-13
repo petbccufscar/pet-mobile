@@ -9,5 +9,5 @@ enum NavigationItem {
   addProject,
   addPetiano,
   addGroup,
-  login
+  login,
 }
