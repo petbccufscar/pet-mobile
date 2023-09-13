@@ -173,6 +173,13 @@ class __SideMenuState extends State<_SideMenu> {
             isSelected: _currentItemSelected == NavigationItem.login,
             onTap: () => _navigateTo(context, '/login', NavigationItem.login),
           ),
+          _SideMenuItem(
+            iconData: Icons.folder,
+            text: 'Descrição do projeto',
+            isSelected: _currentItemSelected == NavigationItem.descProj,
+            onTap: () =>
+                _navigateTo(context, '/project/description', NavigationItem.descProj),
+          ),
         ],
       ),
     );
