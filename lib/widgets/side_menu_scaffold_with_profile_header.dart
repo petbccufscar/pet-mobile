@@ -83,27 +83,30 @@ class __SideMenuState extends State<_SideMenu> {
     return Drawer(
       child: ListView(
         children: [
-          UserAccountsDrawerHeader(
-            accountName: Text('Bruno Pereira'),
-            accountEmail: Text('PET BCC'),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Center(
-                child: Text(
-                  'Foto',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/profile'),
+            child: UserAccountsDrawerHeader(
+              accountName: Text('Bruno Pereira'),
+              accountEmail: Text('PET BCC'),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Center(
+                  child: Text(
+                    'Foto',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
+                //backgroundImage: AssetImage(''),
+                radius: 35,
               ),
-              //backgroundImage: AssetImage(''),
-              radius: 35,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: <Color>[
+                Color(0xFF1485BF),
+                Color(0xFF3CACCB),
+                Color(0xFF61CFD7),
+              ])),
+              margin: EdgeInsets.zero,
             ),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: <Color>[
-              Color(0xFF1485BF),
-              Color(0xFF3CACCB),
-              Color(0xFF61CFD7),
-            ])),
-            margin: EdgeInsets.zero,
           ),
           _SideMenuItem(
             iconData: Icons.calendar_today,
@@ -131,12 +134,6 @@ class __SideMenuState extends State<_SideMenu> {
             isSelected: _currentItemSelected == NavigationItem.activities,
             onTap: () =>
                 _navigateTo(context, '/activities', NavigationItem.activities),
-          ),
-          _SideMenuItem(
-            iconData: Icons.person,
-            text: 'Perfil',
-            isSelected: _currentItemSelected == NavigationItem.profile,
-            onTap: () {},
           ),
           _SideMenuItem(
             iconData: Icons.question_mark,
@@ -176,8 +173,8 @@ class __SideMenuState extends State<_SideMenu> {
             iconData: Icons.folder,
             text: 'Descrição do projeto',
             isSelected: _currentItemSelected == NavigationItem.descProj,
-            onTap: () =>
-                _navigateTo(context, '/project/description', NavigationItem.descProj),
+            onTap: () => _navigateTo(
+                context, '/project/description', NavigationItem.descProj),
           ),
         ],
       ),

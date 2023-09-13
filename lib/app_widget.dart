@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/pages/activities_page.dart';
 import 'package:pet_mobile/pages/descricao_projeto_page.dart';
+import 'package:pet_mobile/pages/profile_page.dart';
 import 'package:pet_mobile/provider/event_provider.dart';
 import 'package:provider/provider.dart';
 import 'pages/meet_page.dart';
@@ -55,6 +56,7 @@ class AppWidget extends StatelessWidget {
             '/activities': (context) => Atividade(),
             '/project/description': (context) => DescricaoProjeto(),
             '/adicionarProjeto': (context) => MarcarAtividadePage(),
+            '/profile': (context) => ProfilePage()
           }),
     );
   }
