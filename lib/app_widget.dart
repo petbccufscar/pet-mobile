@@ -49,7 +49,7 @@ class AppWidget extends StatelessWidget {
             '/register/group': (context) => CriarGrupo(),
             '/meet': (context) => MeetPage(),
             '/login': (context) => LoginPage(),
-            '/projects': (context) => MuralProjeto(),
+            '/projects': (context) => ProjectsList(),
             '/register/project': (context) => AdicionarProjeto(),
             '/activities': (context) => Atividade(),
             '/project/description': (context) => DescricaoProjeto(),
