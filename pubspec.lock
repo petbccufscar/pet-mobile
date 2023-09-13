@@ -48,7 +48,7 @@ packages:
       sha256: "486b7bc707424572cdf7bd7e812a0c146de3fd47ecadf070254cc60383f21dd8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -188,7 +188,7 @@ packages:
       sha256: "1b960e6bf0f8e680d429bbc7aa78106becbcf48ed6f0a6744013b787dbe6127d"
       url: "https://pub.dev"
     source: hosted
-    version: "19.3.53"
+    version: "19.4.56"
   syncfusion_flutter_core:
     dependency: transitive
     description:
@@ -196,7 +196,7 @@ packages:
       sha256: c8898dbc60c54befeb3e33062ad1d1df5bd364abea02e58526f5423d03aebd2a
       url: "https://pub.dev"
     source: hosted
-    version: "19.3.53"
+    version: "19.4.56"
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
@@ -204,7 +204,7 @@ packages:
       sha256: "4027724c9634a2daeda62c056fbaa85188fb4f0b573d9c694d6056f2117f835b"
       url: "https://pub.dev"
     source: hosted
-    version: "19.3.53"
+    version: "19.4.56"
   term_glyph:
     dependency: transitive
     description:
