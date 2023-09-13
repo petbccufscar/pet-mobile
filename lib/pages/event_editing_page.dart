@@ -33,8 +33,21 @@ class _EventEditingPageState extends State<EventEditingPage> {
     super.initState();
 
     if (widget.event == null) {
-      fromDate = DateTime.now();
-      toDate = DateTime.now().add(Duration(hours: 2));
+      final provider = Provider.of<EventProvider>(context, listen: false);
+      final now = DateTime.now();
+      final timeFrom;
+      final timeTo;
+
+      if (now.day != provider.selectedDate.day) {
+        timeFrom = Duration(hours: provider.selectedDate.hour + 8);
+        timeTo = Duration(hours: provider.selectedDate.hour + 10);
+      } else {
+        timeFrom = Duration(hours: now.hour, minutes: now.minute);
+        timeTo = Duration(hours: now.hour + 2, minutes: now.minute);
+      }
+
+      fromDate = provider.selectedDate.add(timeFrom);
+      toDate = provider.selectedDate.add(timeTo);
     } else {
       final event = widget.event!;
 
@@ -42,6 +55,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
       descriptionController.text = event.description;
       fromDate = event.from;
       toDate = event.to;
+      currentColor = event.backgroundColor;
       isAllDayMark = event.isAllDay;
     }
   }
@@ -57,19 +71,63 @@ class _EventEditingPageState extends State<EventEditingPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           leading: CloseButton(),
-          actions: buildEditingActions(),
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(12),
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                buildTitle(),
-                buildDateTimePickes(),
-                buildDescription(),
-                buildIsAllDay(),
+                _buildTextInput(
+                  hint: 'Adicionar Título',
+                  controller: titleController,
+                  validator: (title) => title != null && title.isEmpty
+                      ? 'Título não pode ser vazio'
+                      : null,
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                _buildDateTimeInput(
+                    headerText: 'Começo',
+                    date: fromDate,
+                    onDateClicked: () => _pickFromDateTime(pickDate: true),
+                    onTimeClicked: () => _pickFromDateTime(pickDate: false)),
+                SizedBox(
+                  height: 16.0,
+                ),
+                _buildDateTimeInput(
+                    headerText: 'Fim',
+                    date: toDate,
+                    onDateClicked: () => _pickToDateTime(pickDate: true),
+                    onTimeClicked: () => _pickToDateTime(pickDate: false)),
+                SizedBox(
+                  height: 16.0,
+                ),
+                _buildTextInput(
+                    hint: 'Descrição',
+                    controller: descriptionController,
+                    validator: null),
+                SizedBox(
+                  height: 16.0,
+                ),
+                _buildIsAllDay(),
+                SizedBox(
+                  height: 16.0,
+                ),
+                _buildActionButton(
+                    title: 'Salvar', icon: Icons.done, onPressed: _saveForm),
+                SizedBox(
+                  height: 16.0,
+                ),
+                widget.event != null
+                    ? _buildActionButton(
+                        title: 'Excluir',
+                        icon: Icons.delete,
+                        onPressed: _deleteAppointment,
+                        buttonColor: Colors.red)
+                    : SizedBox()
               ],
             ),
           ),
@@ -115,124 +173,109 @@ class _EventEditingPageState extends State<EventEditingPage> {
     setState(() => currentColor = color);
   }
 
-  List<Widget> buildEditingActions() => [
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            shadowColor: Colors.transparent,
+  Widget _buildHeader({
+    required String header,
+    required Widget child,
+  }) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            header,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          onPressed: saveForm,
-          icon: Icon(Icons.done),
-          label: Text('Salvar'),
-        ),
-      ];
+          child,
+        ],
+      );
 
-  Widget buildTitle() => TextFormField(
+  Widget _buildTextInput(
+          {required String hint,
+          required TextEditingController controller,
+          required String? Function(String?)? validator}) =>
+      TextFormField(
         style: TextStyle(fontSize: 24),
         decoration: InputDecoration(
           border: UnderlineInputBorder(),
-          hintText: 'Adicionar título',
+          hintText: hint,
         ),
-        onFieldSubmitted: (_) => saveForm(),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'Título não pode ser vazio' : null,
-        controller: titleController,
+        onFieldSubmitted: (_) => _saveForm(),
+        validator: validator,
+        controller: controller,
       );
 
-  Widget buildDescription() => TextFormField(
-        style: TextStyle(fontSize: 24),
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(),
-          hintText: 'Descrição',
-        ),
-        onFieldSubmitted: (_) => saveForm(),
-        validator: null,
-        controller: descriptionController,
-      );
-
-  /* Widget pickColor() => Column(
-          /* header: 'Escolher Cor', */
-          children: [
-            Text(
-              'Escolher Cor',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            BlockPicker(
-              pickerColor: pickedColor,
-              onColorChanged: changeColor,
-            ),
-          ]); */
-
-  Widget pickColor() => buildHeader(
-        header: 'Escolher Cor',
-        child: AlertDialog(
-          title: const Text('Pick a color!'),
-          content: SingleChildScrollView(
-            child: BlockPicker(
-              pickerColor: pickerColor,
-              onColorChanged: changeColor,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Got it'),
-              onPressed: () {
-                setState(() => currentColor = pickerColor);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      );
-
-  Widget buildDateTimePickes() => Column(
-        children: [buildFrom(), buildTo()],
-      );
-
-  Widget buildFrom() => buildHeader(
-        header: 'Começo',
+  Widget _buildDateTimeInput(
+          {required String headerText,
+          required DateTime date,
+          required VoidCallback onDateClicked,
+          required VoidCallback onTimeClicked}) =>
+      _buildHeader(
+        header: headerText,
         child: Row(
           children: [
             Expanded(
               flex: 2, // Faz o pegar 66% da tela
-              child: buildDropdownField(
-                text: Utils.toDate(fromDate),
-                onClicked: () => pickFromDateTime(pickDate: true),
+              child: _buildDropdownField(
+                text: Utils.toFullDate(date),
+                onClicked: onDateClicked,
               ),
             ),
-            Expanded(
-              child: buildDropdownField(
-                text: Utils.toTime(fromDate),
-                onClicked: () => pickFromDateTime(pickDate: false),
-              ),
-            ),
+            isAllDayMark
+                ? SizedBox()
+                : Expanded(
+                    flex: 1,
+                    child: _buildDropdownField(
+                      text: Utils.toTime(date),
+                      onClicked: onTimeClicked,
+                    ),
+                  )
           ],
         ),
       );
 
-  Widget buildTo() => buildHeader(
-      header: 'Fim',
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2, // Faz o pegar 66% da tela
-            child: buildDropdownField(
-              text: Utils.toDate(toDate),
-              onClicked: () => pickToDateTime(pickDate: true),
-            ),
-          ),
-          Expanded(
-            child: buildDropdownField(
-              text: Utils.toTime(toDate),
-              onClicked: () => pickToDateTime(pickDate: false),
-            ),
-          )
-        ],
-      ));
+  Widget _buildDropdownField({
+    required String text,
+    required VoidCallback onClicked,
+  }) =>
+      ListTile(
+        title: Text(text),
+        trailing: Icon(Icons.arrow_drop_down),
+        onTap: onClicked,
+      );
 
-  Future pickFromDateTime({required bool pickDate}) async {
-    final date = await pickDateTime(
+  Widget _buildIsAllDay() => Row(
+        children: <Widget>[
+          SizedBox(
+            width: 10,
+          ), //SizedBox
+          Text(
+            'Evento é o dia todo: ',
+            style: TextStyle(fontSize: 17.0),
+          ), //Text
+          SizedBox(width: 10), //SizedBox
+          /** Checkbox Widget **/
+          Checkbox(
+            value: isAllDayMark,
+            onChanged: (value) {
+              setState(() {
+                isAllDayMark = value as bool;
+
+                if (isAllDayMark) {
+                  DateTime now = DateTime.now();
+                  var allDayDate = DateTime(now.year, now.month, now.day);
+
+                  fromDate = allDayDate;
+                  toDate = allDayDate;
+                }
+              });
+            },
+          ), //Checkbox
+        ], //<Widget>[]
+      );
+
+  Future _pickFromDateTime({required bool pickDate}) async {
+    final date = await _pickDateTime(
       fromDate,
       pickDate: pickDate,
     );
@@ -251,8 +294,8 @@ class _EventEditingPageState extends State<EventEditingPage> {
     setState(() => fromDate = date);
   }
 
-  Future pickToDateTime({required bool pickDate}) async {
-    final date = await pickDateTime(
+  Future _pickToDateTime({required bool pickDate}) async {
+    final date = await _pickDateTime(
       toDate,
       pickDate: pickDate,
       firstDate: pickDate ? fromDate : null,
@@ -272,7 +315,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
     setState(() => toDate = date);
   }
 
-  Future<DateTime?> pickDateTime(
+  Future<DateTime?> _pickDateTime(
     DateTime initialDate, {
     required bool pickDate,
     DateTime? firstDate,
@@ -315,55 +358,26 @@ class _EventEditingPageState extends State<EventEditingPage> {
     }
   }
 
-  Widget buildIsAllDay() => Row(
-        children: <Widget>[
-          SizedBox(
-            width: 10,
-          ), //SizedBox
-          Text(
-            'Evento é o dia todo: ',
-            style: TextStyle(fontSize: 17.0),
-          ), //Text
-          SizedBox(width: 10), //SizedBox
-          /** Checkbox Widget **/
-          Checkbox(
-            value: isAllDayMark,
-            onChanged: (value) {
-              setState(() {
-                isAllDayMark = value as bool;
-              });
-            },
-          ), //Checkbox
-        ], //<Widget>[]
-      );
-  Widget buildDropdownField({
-    required String text,
-    required VoidCallback onClicked,
-  }) =>
-      ListTile(
-        title: Text(text),
-        trailing: Icon(Icons.arrow_drop_down),
-        onTap: onClicked,
-      );
+  Widget _buildActionButton(
+      {required String title,
+      required IconData icon,
+      required void Function() onPressed,
+      Color? buttonColor}) {
+    return SizedBox(
+      height: 56,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: buttonColor,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: onPressed,
+        icon: Icon(icon),
+        label: Text(title),
+      ),
+    );
+  }
 
-  Widget buildHeader({
-    required String header,
-    required Widget child,
-  }) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            header,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          child,
-        ],
-      );
-
-  Future saveForm() async {
+  Future _saveForm() async {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid) {
@@ -385,6 +399,16 @@ class _EventEditingPageState extends State<EventEditingPage> {
       } else {
         provider.addEvent(event);
       }
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future _deleteAppointment() async {
+    final isEditing = widget.event != null;
+    final provider = Provider.of<EventProvider>(context, listen: false);
+
+    if (isEditing) {
+      provider.deleteEvent(widget.event!);
       Navigator.of(context).pop();
     }
   }
