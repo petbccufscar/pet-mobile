@@ -9,10 +9,12 @@ class SideMenuScaffoldWithProfileHeader extends StatelessWidget {
     required this.body,
     this.appBarActions,
     this.floatingActionButton,
+    this.appBarElevation,
   }) : super(key: key);
 
   final Widget appBarTitle;
   final List<Widget>? appBarActions;
+  final double? appBarElevation;
 
   final Widget body;
   final Widget? floatingActionButton;
@@ -44,6 +46,7 @@ class SideMenuScaffoldWithProfileHeader extends StatelessWidget {
         centerTitle: true,
         title: appBarTitle,
         actions: appBarActions,
+        elevation: appBarElevation,
       ),
       drawer: _SideMenu(closeDrawer: closeDrawer),
       body: body,
@@ -61,7 +64,6 @@ class _SideMenu extends StatefulWidget {
 }
 
 NavigationItem _currentItemSelected = NavigationItem.home;
-int? teste;
 
 class __SideMenuState extends State<_SideMenu> {
   _navigateTo(BuildContext context, String route, NavigationItem item) {
@@ -169,6 +171,13 @@ class __SideMenuState extends State<_SideMenu> {
             text: 'Login',
             isSelected: _currentItemSelected == NavigationItem.login,
             onTap: () => _navigateTo(context, '/login', NavigationItem.login),
+          ),
+          _SideMenuItem(
+            iconData: Icons.folder,
+            text: 'Descrição do projeto',
+            isSelected: _currentItemSelected == NavigationItem.descProj,
+            onTap: () =>
+                _navigateTo(context, '/project/description', NavigationItem.descProj),
           ),
         ],
       ),

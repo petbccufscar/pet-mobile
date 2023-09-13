@@ -21,7 +21,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   initState() {
-    _calendarController.view = CalendarView.week;
+    _calendarController.view = CalendarView.month;
     super.initState();
   }
 

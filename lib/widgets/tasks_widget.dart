@@ -15,7 +15,7 @@ class _TaskWidgetState extends State<TasksWidget> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<EventProvider>(context);
-    final selectedEvents = provider.eventsOfSelectedDate;
+    final selectedEvents = provider.events;
 
     if (selectedEvents.isEmpty) {
       return Center(
@@ -58,21 +58,21 @@ class _TaskWidgetState extends State<TasksWidget> {
   }
 
   Widget appointmentBuilder(
-      BuildContext context,
-      CalendarAppointmentDetails details,
-      ) {
+    BuildContext context,
+    CalendarAppointmentDetails details,
+  ) {
     final event = details.appointments.first;
 
     return Container(
         width: details.bounds.width,
         height: details.bounds.height,
         decoration: BoxDecoration(
-          color: event.backgroundColor.withOpacity(0.5),
+          color: event.getBackgroundColor.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Text(
-            event.title,
+            event.getTitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

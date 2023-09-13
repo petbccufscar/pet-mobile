@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/pages/activities_page.dart';
+import 'package:pet_mobile/pages/descricao_projeto_page.dart';
 import 'package:pet_mobile/provider/event_provider.dart';
 import 'package:provider/provider.dart';
 import 'pages/meet_page.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
 import 'package:pet_mobile/pages/adicionar_projeto_page.dart';
 import 'package:pet_mobile/pages/marcar_atividades.dart';
+import 'package:pet_mobile/pages/projectsList.dart';
 
 import 'pages/login_page.dart';
 import 'config/themes/theme.dart';
@@ -32,28 +34,28 @@ class AppWidget extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        onGenerateTitle: (BuildContext context) =>
-            AppLocalizations.of(context)!.title,
-        theme: AppTheme.theme,
-        // i18n
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        // Rotas
-        initialRoute: '/',
-        routes: {
-          '/': (context) => HomePage(),
-          '/help': (context) => HelpPage(),
-          '/calendar': (context) => CalendarPage(),
-          '/register/petiano': (context) => CadasPetiano(),
-          '/register/group': (context) => CriarGrupo(),
-          '/meet': (context) => MeetPage(),
-          '/login': (context) => LoginPage(),
-          '/projects': (context) => MuralProjeto(),
-          '/register/project': (context) => AdicionarProjeto(),
-          '/activities': (context) => Atividade(),
-          '/adicionarProjeto': (context) => MarcarAtividadePage(),
-        },
-      ),
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context)!.title,
+          theme: AppTheme.theme,
+          // i18n
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          // Rotas
+          initialRoute: '/',
+          routes: {
+            '/': (context) => HomePage(),
+            '/help': (context) => HelpPage(),
+            '/calendar': (context) => CalendarPage(),
+            '/register/petiano': (context) => CadasPetiano(),
+            '/register/group': (context) => CriarGrupo(),
+            '/meet': (context) => MeetPage(),
+            '/login': (context) => LoginPage(),
+            '/projects': (context) => ProjectsList(),
+            '/register/project': (context) => AdicionarProjeto(),
+            '/activities': (context) => Atividade(),
+            '/project/description': (context) => DescricaoProjeto(),
+            '/adicionarProjeto': (context) => MarcarAtividadePage(),
+          }),
     );
   }
 }
