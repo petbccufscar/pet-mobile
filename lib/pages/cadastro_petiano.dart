@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pet_mobile/widgets/side_menu_scaffold.dart';
+import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
 class CadasPetiano extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class CadasPetianoPage extends State<CadasPetiano> {
 
   @override
   Widget build(BuildContext context) {
-    return SideMenuScaffold(
+    return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text('Registrar Petiano'),
       body: Container(
         padding: EdgeInsets.only(
