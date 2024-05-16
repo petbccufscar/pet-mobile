@@ -90,13 +90,13 @@ class __SideMenuState extends State<_SideMenu> {
               accountEmail: Text('PET BCC'),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Center(
+                /*child: Center(
                   child: Text(
                     'Foto',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
-                //backgroundImage: AssetImage(''),
+                ),*/
+                backgroundImage: NetworkImage('https://petbcc.ufscar.br/media/images/equipe/IMG_20210403_142933_015.jpg_SDflxTe.png'),
                 radius: 35,
               ),
               decoration: BoxDecoration(
@@ -107,6 +107,13 @@ class __SideMenuState extends State<_SideMenu> {
               ])),
               margin: EdgeInsets.zero,
             ),
+          ),
+          _SideMenuItem(
+            iconData: Icons.home,
+            text: 'Home',
+            isSelected: _currentItemSelected == NavigationItem.home,
+            onTap: () =>
+                _navigateTo(context, '/', NavigationItem.home),
           ),
           _SideMenuItem(
             iconData: Icons.calendar_today,
@@ -158,23 +165,9 @@ class __SideMenuState extends State<_SideMenu> {
           ),
           _SideMenuItem(
             iconData: Icons.add,
-            text: 'Registrar Grupo',
-            isSelected: _currentItemSelected == NavigationItem.addGroup,
-            onTap: () => _navigateTo(
-                context, '/register/group', NavigationItem.addGroup),
-          ),
-          _SideMenuItem(
-            iconData: Icons.add,
             text: 'Login',
             isSelected: _currentItemSelected == NavigationItem.login,
             onTap: () => _navigateTo(context, '/login', NavigationItem.login),
-          ),
-          _SideMenuItem(
-            iconData: Icons.folder,
-            text: 'Descrição do projeto',
-            isSelected: _currentItemSelected == NavigationItem.descProj,
-            onTap: () => _navigateTo(
-                context, '/project/description', NavigationItem.descProj),
           ),
         ],
       ),
