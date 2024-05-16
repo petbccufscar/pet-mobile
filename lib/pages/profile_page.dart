@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 // import 'package:pet_mobile/pages/list_projects_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String memberName;
+
+  const ProfilePage({Key? key, this.memberName = 'Nome Padrão'}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
+
 
 class _ProfilePageState extends State<ProfilePage>
     with TickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> _hoursAnimation;
   late Animation<double> _activitiesAnimation;
+
 
   @override
   void initState() {

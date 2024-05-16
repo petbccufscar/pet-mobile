@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_mobile/pages/help_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -66,7 +67,7 @@ class LoginTela extends State<LoginPage> {
               style: TextStyle(fontSize: 20),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 15),
               child: Container(
                 height: 50.0,
                 child: TextButton(
@@ -84,44 +85,24 @@ class LoginTela extends State<LoginPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(160, 5, 100, 5),
-              child: Text(
-                "ou",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.normal),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
               child: Container(
                 height: 50.0,
                 child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    backgroundColor: Colors.lightBlue,
-                  ),
-                  child: Text(
-                    "conectar com facebook",
-                    style: TextStyle(color: Colors.white, fontSize: 22.0),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Container(
-                height: 50.0,
-                child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HelpPage()),
+                      );
+                    },
                     child: Text.rich(
                       TextSpan(
                         text: 'Não tem uma conta? ',
                         style: TextStyle(fontSize: 13),
                         children: <TextSpan>[
                           TextSpan(
-                              text: 'Cadastre-se!',
+                              text: 'Ajuda',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                               )),

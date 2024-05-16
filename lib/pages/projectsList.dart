@@ -1,50 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/model/project.dart';
+import 'package:pet_mobile/pages/descricao_projeto_page.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
-class ProjectsList extends StatefulWidget{
+class ProjectsList extends StatefulWidget {
   const ProjectsList({Key? key}) : super(key: key);
-  
+
   @override
-  State<ProjectsList> createState() => _ProjectsListState();  
+  State<ProjectsList> createState() => _ProjectsListState();
 }
 
-class _ProjectsListState extends State<ProjectsList>{
+class _ProjectsListState extends State<ProjectsList> {
   List<Project> projectsList = [
     Project(
         title: 'Aplicativo Sororidade',
         imageUrl: 'https://petbcc.ufscar.br/media/app-sororidade.jpg'),
     Project(
-      title: 'Beecrowd',
-      imageUrl: 'https://petbcc.ufscar.br/media/bee.png'),
+        title: 'Beecrowd', imageUrl: 'https://petbcc.ufscar.br/media/bee.png'),
     Project(
-      title: 'Engenharia de Software Quântico',
-      imageUrl: 'https://petbcc.ufscar.br/media/quantico.png'),
+        title: 'Engenharia de Software Quântico',
+        imageUrl: 'https://petbcc.ufscar.br/media/quantico.png'),
     Project(
-        title: 'Iuten',
-        imageUrl: 'https://petbcc.ufscar.br/media/Logo.png'),
+        title: 'Iuten', imageUrl: 'https://petbcc.ufscar.br/media/Logo.png'),
     Project(
-      title: 'Manual de Referências em C/C++',
-      imageUrl: 'https://petbcc.ufscar.br/media/tutorial_linguagem_c.jpeg'),
+        title: 'Manual de Referências em C/C++',
+        imageUrl: 'https://petbcc.ufscar.br/media/tutorial_linguagem_c.jpeg'),
   ];
 
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return SideMenuScaffoldWithProfileHeader(
-      appBarTitle: Text('Projetos'), 
+      appBarTitle: Text('Projetos'),
       appBarElevation: 0,
-      body:
-        Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-            Colors.blue,
-            //Color(0xFF1485BF),
-            Color(0xFF61CFD7),
-      ])),
-      child: SafeArea(
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Colors.blue,
+              //Color(0xFF1485BF),
+              Color(0xFF61CFD7),
+            ])),
+        child: SafeArea(
           child: Container(
             margin: EdgeInsets.all(16),
             child: GridView.builder(
@@ -59,6 +57,11 @@ class _ProjectsListState extends State<ProjectsList>{
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DescricaoProjeto()),
+                    );
                     /*Navigator.push(
                       context,
                       MaterialPageRoute(

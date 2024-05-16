@@ -290,7 +290,7 @@ class MarcarAtividadeState extends State<MarcarAtividadePage> {
                     padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
                     child: Form(
                       child: TextFormField(
-                        controller: TextEditingController(text: 'Adicionar'),
+                        controller: TextEditingController(text: 'Salvar'),
                         readOnly: true,
                         keyboardType: TextInputType.none,
                         decoration: const InputDecoration(
@@ -300,7 +300,7 @@ class MarcarAtividadeState extends State<MarcarAtividadePage> {
                                   BorderRadius.all(Radius.circular(10))),
                           fillColor: Colors.white,
                           filled: true,
-                          prefixIcon: Icon(Icons.add_sharp, color: Colors.blue),
+                          prefixIcon: Icon(Icons.save, color: Colors.blue),
                         ),
                       ),
                     ))
