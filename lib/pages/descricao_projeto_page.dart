@@ -91,7 +91,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                                   right: 10,
                                 ),
                                 child: Text(
-                                  project['bjetivo'], // Descrição do projeto do backend
+                                  project['objetivo'], // Descrição do projeto do backend
                                   textAlign: TextAlign.justify,
                                   style: const TextStyle(
                                     fontSize: 18,

@@ -91,7 +91,7 @@ class _ProjectsListState extends State<ProjectsList> {
                                   child: Hero(
                                     tag: 'project-$index',
                                     child: Image.network(
-                                      project['imagem'], //ta certo isso?
+                                      project['imagem'], 
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -101,7 +101,7 @@ class _ProjectsListState extends State<ProjectsList> {
                                 flex: 1,
                                 child: Center(
                                   child: Text(
-                                    project['titulo'], // ta certo isso?
+                                    project['titulo'], 
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
