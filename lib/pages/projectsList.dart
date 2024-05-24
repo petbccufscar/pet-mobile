@@ -67,7 +67,9 @@ class _ProjectsListState extends State<ProjectsList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DescricaoProjeto(),
+                              builder: (context) => DescricaoProjeto(
+                                nomeProjeto: project['titulo'],
+                              ),
                             ),
                           );
                         },

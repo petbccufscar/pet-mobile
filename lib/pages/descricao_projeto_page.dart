@@ -1,146 +1,10 @@
-import 'package:flutter/material.dart';
 
-class DescricaoProjeto extends StatefulWidget {
-  const DescricaoProjeto({Key? key}) : super(key: key);
-
-  @override
-  State<DescricaoProjeto> createState() => _DescricaoProjetoState();
-}
-
-class _DescricaoProjetoState extends State<DescricaoProjeto> {
-  final List<String> _membros = [
-    "Fulano",
-    "Ciclano",
-    "Beltrano"
-  ]; // adicionando membros
-
-  @override
-  Widget build(BuildContext context) {
-    final double _screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.blue,
-      appBar: AppBar(
-        title: const Text("Descrição do projeto"),
-        centerTitle: true,
-      ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Positioned(
-            top: _screenHeight * .28,
-            height: _screenHeight * .60,
-            left: 0,
-            right: 0,
-            child: PageView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                            top: 10,
-                            right: 15,
-                          ),
-                          child: const Text(
-                            "Engenharia de Software Quântico",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        _buildSectionTitle("Sobre o projeto"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 10,
-                            right: 10,
-                          ),
-                          child: Text(
-                            "Desenvolvimento de softwares da computação clássica em computação quântica para testes e comparações de benchmark, afim de atestar com valores os ganhos significativos de performance e de tempo.",
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        _buildSectionTitle("Membros"),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 10,
-                          ),
-                          child: Column(
-                            children: _membros
-                                .map((membro) => Text(
-                                      membro,
-                                      textAlign: TextAlign.justify,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
-                        _buildSectionTitle("Outras infos"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: -10,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-              child: Image.network(
-                "https://socientifica.com.br/wp-content/uploads/2019/12/Computa%C3%A7%C3%A3o-quantica-scaled.png?ezimgfmt=ngcb4/notWebP",
-                height: _screenHeight * .3,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 10,
-        top: 10,
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-/*
 import 'package:flutter/material.dart';
 import 'package:pet_mobile/provider/api_service.dart'; 
 
 class DescricaoProjeto extends StatefulWidget {
-  const DescricaoProjeto({Key? key}) : super(key: key);
+  final String nomeProjeto;
+  const DescricaoProjeto({Key? key, required this.nomeProjeto}) : super(key: key);
 
   @override
   State<DescricaoProjeto> createState() => _DescricaoProjetoState();
@@ -149,13 +13,6 @@ class DescricaoProjeto extends StatefulWidget {
 class _DescricaoProjetoState extends State<DescricaoProjeto> {
   late Future<List<dynamic>> futureProjects;
   final ApiService apiService = ApiService(UrlAppend: 'projetos/');
-  /* 
-  final List<String> _membros = [
-    "Fulano",
-    "Ciclano",
-    "Beltrano"
-  ]; // adicionando membros
-  */
 
   @override
   void initState() {
@@ -183,9 +40,15 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
             return Center(child: Text('Nenhum projeto encontrado'));
           } else {
             List<dynamic> projects = snapshot.data!;
-            // Assumindo que você deseja exibir o primeiro projeto da lista
-            final project = projects[0];
-            return Stack(
+            final project = projects.firstWhere(
+            (projeto) => projeto['titulo'] != null && projeto['titulo'] == widget.nomeProjeto,
+            orElse: () => null,
+            );
+            if (project == null){
+              return Center(child: Text('Projeto não encontrado'));
+            }
+            else{
+              return Stack(
               alignment: Alignment.topCenter,
               children: <Widget>[
                 Positioned(
@@ -212,7 +75,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                                   right: 15,
                                 ),
                                 child: Text(
-                                  project['title'], // Título do projeto do backend
+                                  project['titulo'], // Título do projeto do backend
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 22,
@@ -228,7 +91,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                                   right: 10,
                                 ),
                                 child: Text(
-                                  project['description'], // Descrição do projeto do backend
+                                  project['bjetivo'], // Descrição do projeto do backend
                                   textAlign: TextAlign.justify,
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -242,7 +105,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                                   top: 10,
                                 ),
                                 child: Column(
-                                  children: (project['members'] as List<dynamic>)
+                                  children: (project['membros'] as List<dynamic>)
                                       .map((membro) => Text(
                                             membro,
                                             textAlign: TextAlign.justify,
@@ -270,7 +133,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                       bottomRight: Radius.circular(15),
                     ),
                     child: Image.network(
-                      project['image_url'], // URL da imagem do backend
+                      project['imagem'], // URL da imagem do backend
                       height: _screenHeight * .3,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -279,6 +142,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                 ),
               ],
             );
+            }
           }
         },
       ),
@@ -301,4 +165,3 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
     );
   }
 }
-*/
