@@ -64,11 +64,12 @@ class _ProjectsListState extends State<ProjectsList> {
                       var project = projectsList[index];
                       return GestureDetector(
                         onTap: () {
+                          print(project);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => DescricaoProjeto(
-                                nomeProjeto: project['titulo'],
+                                project: project,
                               ),
                             ),
                           );

@@ -53,7 +53,7 @@ class AppWidget extends StatelessWidget {
             '/projects': (context) => ProjectsList(),
             '/register/project': (context) => AdicionarProjeto(),
             '/activities': (context) => Atividade(),
-            '/project/description': (context) => DescricaoProjeto(nomeProjeto: '',),
+            '/project/description': (context) => DescricaoProjeto(project: null,),
             '/adicionarProjeto': (context) => MarcarAtividadePage(),
             '/profile': (context) => ProfilePage()
           }),
