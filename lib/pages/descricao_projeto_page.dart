@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:pet_mobile/provider/api_service.dart';
 
 class DescricaoProjeto extends StatefulWidget {
@@ -14,6 +12,7 @@ class DescricaoProjeto extends StatefulWidget {
 
 class _DescricaoProjetoState extends State<DescricaoProjeto> {
   List<dynamic> memberNames = [];
+  final ApiService apiService = ApiService(UrlAppend: 'perfis/');
 
   @override
   void initState() {
@@ -34,11 +33,11 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
   }
 
   Future<List<dynamic>> fetchMemberDetails(List<int> memberIds) async {
-    final url = Uri.parse('https://sua-api.com/membros?ids=${memberIds.join(",")}');
-    final response = await http.get(url);
+    
+    final response = await apiService.fetchData(); // Assuming 'fetchData' needs a URL segment
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+    if (response is List) {
+      return response.where((member) => memberIds.contains(member['id'])).toList();
     } else {
       throw Exception('Failed to load member details');
     }
