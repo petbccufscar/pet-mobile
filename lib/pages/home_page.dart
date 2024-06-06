@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 
-import 'package:pet_mobile/pages/profile_page.dart';
+import 'package:pet_mobile/pages/profile_page/profile_page.dart';
 import 'package:pet_mobile/pages/activities_page.dart';
 import 'package:pet_mobile/pages/meet_page.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
