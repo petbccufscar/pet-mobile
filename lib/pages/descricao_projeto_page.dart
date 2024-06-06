@@ -1,22 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:pet_mobile/provider/api_service.dart';
 
 class DescricaoProjeto extends StatefulWidget {
-  const DescricaoProjeto({Key? key}) : super(key: key);
+  final dynamic project;
+
+  const DescricaoProjeto({Key? key, required this.project}) : super(key: key);
 
   @override
   State<DescricaoProjeto> createState() => _DescricaoProjetoState();
 }
 
 class _DescricaoProjetoState extends State<DescricaoProjeto> {
-  final List<String> _membros = [
-    "Fulano",
-    "Ciclano",
-    "Beltrano"
-  ]; // adicionando membros
+  List<dynamic> memberNames = [];
+  final ApiService apiService = ApiService(UrlAppend: 'perfis/');
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMemberNames();
+  }
+
+  void fetchMemberNames() async {
+    try {
+      final memberIds = widget.project['membros'].cast<int>();
+      final memberDetails = await fetchMemberDetails(memberIds);
+      setState(() {
+        memberNames = memberDetails.map((member) => member['nome']).toList();
+      });
+    } catch (error) {
+      print('Failed to load member details: $error');
+    }
+  }
+
+  Future<List<dynamic>> fetchMemberDetails(List<int> memberIds) async {
+    
+    final response = await apiService.fetchData(); // Assuming 'fetchData' needs a URL segment
+
+    if (response is List) {
+      return response.where((member) => memberIds.contains(member['id'])).toList();
+    } else {
+      throw Exception('Failed to load member details');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final double _screenHeight = MediaQuery.of(context).size.height;
+    final project = widget.project;
+
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -49,8 +80,8 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                             top: 10,
                             right: 15,
                           ),
-                          child: const Text(
-                            "Engenharia de Software Quântico",
+                          child: Text(
+                            project['titulo'], // Título do projeto do backend
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 22,
@@ -66,7 +97,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                             right: 10,
                           ),
                           child: Text(
-                            "Desenvolvimento de softwares da computação clássica em computação quântica para testes e comparações de benchmark, afim de atestar com valores os ganhos significativos de performance e de tempo.",
+                            project['objetivo'], // Descrição do projeto do backend
                             textAlign: TextAlign.justify,
                             style: const TextStyle(
                               fontSize: 18,
@@ -80,9 +111,9 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                             top: 10,
                           ),
                           child: Column(
-                            children: _membros
-                                .map((membro) => Text(
-                                      membro,
+                            children: memberNames
+                                .map((nome) => Text(
+                                      nome,
                                       textAlign: TextAlign.justify,
                                       style: const TextStyle(
                                         fontSize: 18,
@@ -92,6 +123,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                           ),
                         ),
                         _buildSectionTitle("Outras infos"),
+                        // Adicione outras seções conforme necessário
                       ],
                     ),
                   ),
@@ -107,7 +139,7 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
                 bottomRight: Radius.circular(15),
               ),
               child: Image.network(
-                "https://socientifica.com.br/wp-content/uploads/2019/12/Computa%C3%A7%C3%A3o-quantica-scaled.png?ezimgfmt=ngcb4/notWebP",
+                project['imagem'], // URL da imagem do backend
                 height: _screenHeight * .3,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
