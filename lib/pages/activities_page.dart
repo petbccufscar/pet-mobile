@@ -55,7 +55,7 @@ class _AtividadeState extends State<Atividade> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ActivityDescriptionPage(),
+                                  builder: (context) => ActivityDescriptionPage(activity: {}),
                                 ),
                               );
                             },
