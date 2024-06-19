@@ -11,7 +11,7 @@ class DescricaoProjeto extends StatefulWidget {
 }
 
 class _DescricaoProjetoState extends State<DescricaoProjeto> {
-  List<dynamic> memberNames = [];
+  List<String> memberNames = []; // Inicialize como List<String>
   final ApiService apiService = ApiService(UrlAppend: 'perfis/');
 
   @override
@@ -23,23 +23,13 @@ class _DescricaoProjetoState extends State<DescricaoProjeto> {
   void fetchMemberNames() async {
     try {
       final memberIds = widget.project['membros'].cast<int>();
-      final memberDetails = await fetchMemberDetails(memberIds);
+      final memberDetails = await apiService.fetchMemberDetails(memberIds);
       setState(() {
-        memberNames = memberDetails.map((member) => member['nome']).toList();
+        memberNames = memberDetails.map((member) => member['nome'].toString()).toList();
+        // Use toString() para garantir que o nome seja convertido para String
       });
     } catch (error) {
       print('Failed to load member details: $error');
-    }
-  }
-
-  Future<List<dynamic>> fetchMemberDetails(List<int> memberIds) async {
-    
-    final response = await apiService.fetchData(); // Assuming 'fetchData' needs a URL segment
-
-    if (response is List) {
-      return response.where((member) => memberIds.contains(member['id'])).toList();
-    } else {
-      throw Exception('Failed to load member details');
     }
   }
 
