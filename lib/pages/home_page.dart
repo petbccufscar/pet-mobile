@@ -7,6 +7,8 @@ import 'package:pet_mobile/pages/activities_page.dart';
 import 'package:pet_mobile/pages/meet_page.dart';
 import 'package:pet_mobile/pages/mural_page.dart';
 
+import 'package:pet_mobile/pages/activity_description.dart';
+import 'package:pet_mobile/pages/event_viewing_page.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -49,23 +51,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildProjectsSection(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: futureProjects,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Erro: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('Nenhum projeto encontrado'));
-        } else {
-          List<dynamic> projects = snapshot.data!;
-          return _buildSection(context, "Projetos", projects, MuralProjeto(), false);
-        }
-      },
-    );
-  }
-
+  return FutureBuilder<List<dynamic>>(
+    future: futureProjects,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro: ${snapshot.error}'));
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return Center(child: Text('Nenhum projeto encontrado'));
+      } else {
+        List<dynamic> projects = snapshot.data!;
+        return _buildSection(context, "Projetos", projects, MuralProjeto(), false);
+      }
+    },
+  );
+}
+  
   Widget _buildMeetingsSection(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
       future: futureMeetings,
@@ -120,26 +122,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSection(BuildContext context, String title, List<dynamic> items,
-      Widget nextPage, bool isMembersSection) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10),
-        isMembersSection
-            ? _buildMembersList(context, items)
-            : _buildItemList(context, items, nextPage),
-        SizedBox(height: 20),
-      ],
-    );
-  }
+  
 
   Widget _buildMembersList(BuildContext context, List<dynamic> members) {
     return Container(
@@ -187,22 +170,61 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildItemList(BuildContext context, List<dynamic> items, Widget nextPage) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(items[index]['titulo'] ?? 'Título não disponível'), // Adiciona verificação de nulidade
-          onTap: () {
+  Widget _buildSection(BuildContext context, String title, List<dynamic> items, Widget nextPage, bool isMembersSection) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(height: 10),
+      isMembersSection
+          ? _buildMembersList(context, items)
+          : _buildItemList(context, items, nextPage),
+      SizedBox(height: 20),
+    ],
+  );
+}
+
+Widget _buildItemList(BuildContext context, List<dynamic> items, Widget nextPage) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      return ListTile(
+        title: Text(items[index]['titulo'] ?? 'Título não disponível'),
+        onTap: () {
+          // Determine o tipo de item e redirecione para a página apropriada
+          if (nextPage is MuralProjeto) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MuralProjeto(project: items[index])),
+            );
+          } else if (nextPage is MeetPage) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EventViewingPage(event: items[index])),
+            );
+          } else if (nextPage is Atividade) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ActivityDescriptionPage(activity: items[index])),
+            );
+          } else {
+            // Página padrão, caso nenhum tipo específico seja identificado
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => nextPage),
             );
-          },
-        );
-      },
-    );
+          }
+        },
+      );
+    },
+  );
   }
 }

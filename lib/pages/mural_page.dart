@@ -2,78 +2,54 @@ import "package:flutter/material.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:pet_mobile/widgets/ballon.dart";
 import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
+import 'package:pet_mobile/provider/api_service.dart';
 
 class MuralProjeto extends StatefulWidget {
-  const MuralProjeto({Key? key}) : super(key: key);
+  final dynamic project;
+
+  const MuralProjeto({Key? key, this.project}) : super(key: key);
 
   @override
   _MuralProjetoState createState() => _MuralProjetoState();
 }
 
 class _MuralProjetoState extends State<MuralProjeto> {
-  String projectName = "PET MOBILE";
-  String goal = "Criar um aplicativo mobile para auxiliar grupos PET.";
-  List members = [
-    "Amanda",
-    "Allan",
-    "Bruno",
-    "Carlos",
-    "Iara",
-    "Lorenzo",
-    "Matheus",
-  ];
   bool readMoreObj = false;
   bool readMoreMem = false;
   bool readMoreMeet = false;
   bool readMoreTsk = false;
 
-  // Próximas reuniões.
-  List<String> meets = ["Setembro, 15 - 16h30"];
+  List<dynamic> memberNames = [];
+  final ApiService apiService = ApiService(UrlAppend: 'perfis/');
 
-  // Tarefas a serem feitas.
-  final List _toDo = [
-    {"Title": "Desenvolver telas", "finished": false},
-  ];
-
-  // Controla o padding da coluna dentro do corpo do Scaffold.
-  static const double _paddingColumn = 15;
-
-  Widget listBuilder(BuildContext context, int index) {
-    return CheckboxListTile(
-      dense: true,
-      contentPadding: EdgeInsets.all(0),
-      value: _toDo[index]["finished"],
-      onChanged: (c) {
-        setState(
-          () {
-            _toDo[index]["finished"] = c;
-          },
-        );
-      },
-      title: Text(
-        _toDo[index]["Title"],
-        style: const TextStyle(fontFamily: "Comfortaa", fontSize: 18),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    fetchMemberNames();
   }
 
-  Widget lMemberBuilder(BuildContext context, int index) {
-    return (Text(
-      members[index],
-      style: const TextStyle(fontSize: 18, fontFamily: "Comfortaa"),
-    ));
-  }
-
-  Widget lMeetsBuilder(BuildContext context, int index) {
-    return (Text(
-      meets[index],
-      style: const TextStyle(fontSize: 18, fontFamily: "Comfortaa"),
-    ));
+  void fetchMemberNames() async {
+    try {
+      final memberIds = widget.project['membros'].cast<int>();
+      final memberDetails = await apiService.fetchMemberDetails(memberIds);
+      setState(() {
+        memberNames = memberDetails.map((member) => member['nome']).toList();
+      });
+    } catch (error) {
+      print('Failed to load member details: $error');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Variável para manipulação da altura de widgets baseada na altura da tela
+    String projectName = widget.project?['titulo'] ?? "Título do Projeto";
+    String goal = widget.project?['objetivo'] ?? "Objetivo do Projeto";
+
+    List<String> meets = ["Setembro, 15 - 16h30"];
+    final List _toDo = [
+      {"Title": "Desenvolver telas", "finished": false},
+    ];
+
     return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text(AppLocalizations.of(context)!.mural_page_title),
       body: Padding(
@@ -136,24 +112,31 @@ class _MuralProjetoState extends State<MuralProjeto> {
                                 topRight: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
                               ),
-                              cndLeiaMais: members.length > 4,
+                              cndLeiaMais: memberNames.length > 4,
                               readMore: readMoreMem,
                               title: 'Membros',
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: readMoreMem
-                                      ? members.length
-                                      : (members.length < 3
-                                          ? members.length
+                                      ? memberNames.length
+                                      : (memberNames.length < 3
+                                          ? memberNames.length
                                           : 3),
-                                  itemBuilder: lMemberBuilder),
+                                  itemBuilder: (context, index) {
+                                    return Text(
+                                      memberNames[index],
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "Comfortaa"),
+                                    );
+                                  }),
                             ),
                           ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: _paddingColumn),
+                      padding: const EdgeInsets.only(top: 15),
                       child: BallonContainer(
                         backGroundColor: Color(0xFFF0766B),
                         borderRadius: BorderRadius.all(
@@ -172,12 +155,18 @@ class _MuralProjetoState extends State<MuralProjeto> {
                           itemCount: readMoreMeet
                               ? meets.length
                               : (meets.length < 3 ? meets.length : 3),
-                          itemBuilder: lMeetsBuilder,
+                          itemBuilder: (context, index) {
+                            return Text(
+                              meets[index],
+                              style: const TextStyle(
+                                  fontSize: 18, fontFamily: "Comfortaa"),
+                            );
+                          },
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: _paddingColumn),
+                      padding: const EdgeInsets.only(top: 15),
                       child: BallonContainer(
                         backGroundColor: Color(0xFF61CFD7),
                         borderRadius: BorderRadius.all(
@@ -193,13 +182,28 @@ class _MuralProjetoState extends State<MuralProjeto> {
                         title: 'Tarefas',
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemBuilder: listBuilder,
+                          itemBuilder: (context, index) {
+                            return CheckboxListTile(
+                              dense: true,
+                              contentPadding: EdgeInsets.all(0),
+                              value: _toDo[index]["finished"],
+                              onChanged: (c) {
+                                setState(() {
+                                  _toDo[index]["finished"] = c;
+                                });
+                              },
+                              title: Text(_toDo[index]["Title"],
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: "Comfortaa")),
+                            );
+                          },
                           itemCount: readMoreTsk
                               ? _toDo.length
                               : (_toDo.length < 3 ? _toDo.length : 3),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
