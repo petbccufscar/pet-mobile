@@ -10,34 +10,38 @@ class EventProvider extends ChangeNotifier {
 
   DateTime get selectedDate => _selectedDate;
 
-  void setDate(DateTime date) => _selectedDate = date;
+  void setDate(DateTime date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
 
   List<Event> getEventsOfSelectedDate(DateTime selectedDate) {
     return _events
         .where(
           (event) =>
-              Utils.toDate(event.from) == Utils.toDate(selectedDate) ||
-              Utils.toDate(event.to) == Utils.toDate(selectedDate),
+              Utils.toDate(event.dataHora) == Utils.toDate(selectedDate),
         )
         .toList();
   }
 
   void addEvent(Event event) {
-    _events.add(event);
-
+    final newId = event.id;
+    final newEvent = event.copyWith(id: newId);
+    _events.add(newEvent);
     notifyListeners();
   }
 
   void deleteEvent(Event event) {
-    _events.remove(event);
-
+    _events.removeWhere((e) => e.id == event.id);
     notifyListeners();
   }
 
   void editEvent(Event newEvent, Event oldEvent) {
-    final index = _events.indexOf(oldEvent);
+    final index = _events.indexWhere((e) => e.id == oldEvent.id);
 
-    _events[index] = newEvent;
-    notifyListeners();
+    if (index != -1) {
+      _events[index] = newEvent;
+      notifyListeners();
+    }
   }
 }

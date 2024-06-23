@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pet_mobile/model/event.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
 import 'package:pet_mobile/provider/api_service.dart';
 import 'package:pet_mobile/pages/profile_page.dart';
@@ -196,6 +197,7 @@ Widget _buildItemList(BuildContext context, List<dynamic> items, Widget nextPage
     physics: NeverScrollableScrollPhysics(),
     itemCount: items.length,
     itemBuilder: (context, index) {
+      
       return ListTile(
         title: Text(items[index]['titulo'] ?? 'Título não disponível'),
         onTap: () {
@@ -206,10 +208,14 @@ Widget _buildItemList(BuildContext context, List<dynamic> items, Widget nextPage
               MaterialPageRoute(builder: (context) => MuralProjeto(project: items[index])),
             );
           } else if (nextPage is MeetPage) {
+            // Converta o Map<String, dynamic> em um objeto Event
+            Event? event = Event.fromMap(items[index]);
+            print("Evento: $event");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => EventViewingPage(event: items[index])),
+              MaterialPageRoute(builder: (context) => EventViewingPage(event: event)),
             );
+            
           } else if (nextPage is Atividade) {
             Navigator.push(
               context,

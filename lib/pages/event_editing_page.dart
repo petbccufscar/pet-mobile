@@ -21,9 +21,12 @@ class _EventEditingPageState extends State<EventEditingPage> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  final linkController = TextEditingController();
+  final potController = TextEditingController();
+  final participantsController = TextEditingController();
+  
   late DateTime fromDate;
   late DateTime toDate;
-  late String description;
   late bool isAllDayMark = false;
   late Color pickerColor = Color(0xff443a49);
   late Color currentColor = Color(0xff443a49);
@@ -51,12 +54,15 @@ class _EventEditingPageState extends State<EventEditingPage> {
     } else {
       final event = widget.event!;
 
-      titleController.text = event.title;
-      descriptionController.text = event.description;
-      fromDate = event.from;
-      toDate = event.to;
+      titleController.text = event.titulo;
+      descriptionController.text = event.descricao;
+      fromDate = event.dataHora;
+      toDate = event.createdAt;
       currentColor = event.backgroundColor;
       isAllDayMark = event.isAllDay;
+      linkController.text = event.link;
+      potController.text = event.pot.toString();
+      participantsController.text = event.participantes.join(", ");
     }
   }
 
@@ -64,6 +70,9 @@ class _EventEditingPageState extends State<EventEditingPage> {
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
+    linkController.dispose();
+    potController.dispose();
+    participantsController.dispose();
     super.dispose();
   }
 
@@ -86,41 +95,49 @@ class _EventEditingPageState extends State<EventEditingPage> {
                       ? 'Título não pode ser vazio'
                       : null,
                 ),
-                SizedBox(
-                  height: 16.0,
+                SizedBox(height: 16.0),
+                _buildTextInput(
+                  hint: 'Adicionar Link',
+                  controller: linkController,
+                  validator: null,
                 ),
+                SizedBox(height: 16.0),
+                _buildTextInput(
+                  hint: 'Adicionar POT',
+                  controller: potController,
+                  validator: (pot) => pot != null && int.tryParse(pot) == null
+                      ? 'POT deve ser um número'
+                      : null,
+                ),
+                SizedBox(height: 16.0),
+                _buildTextInput(
+                  hint: 'Adicionar Participantes (separados por vírgula)',
+                  controller: participantsController,
+                  validator: null,
+                ),
+                SizedBox(height: 16.0),
                 _buildDateTimeInput(
                     headerText: 'Começo',
                     date: fromDate,
                     onDateClicked: () => _pickFromDateTime(pickDate: true),
                     onTimeClicked: () => _pickFromDateTime(pickDate: false)),
-                SizedBox(
-                  height: 16.0,
-                ),
+                SizedBox(height: 16.0),
                 _buildDateTimeInput(
                     headerText: 'Fim',
                     date: toDate,
                     onDateClicked: () => _pickToDateTime(pickDate: true),
                     onTimeClicked: () => _pickToDateTime(pickDate: false)),
-                SizedBox(
-                  height: 16.0,
-                ),
+                SizedBox(height: 16.0),
                 _buildTextInput(
                     hint: 'Descrição',
                     controller: descriptionController,
                     validator: null),
-                SizedBox(
-                  height: 16.0,
-                ),
+                SizedBox(height: 16.0),
                 _buildIsAllDay(),
-                SizedBox(
-                  height: 16.0,
-                ),
+                SizedBox(height: 16.0),
                 _buildActionButton(
                     title: 'Salvar', icon: Icons.done, onPressed: _saveForm),
-                SizedBox(
-                  height: 16.0,
-                ),
+                SizedBox(height: 16.0),
                 widget.event != null
                     ? _buildActionButton(
                         title: 'Excluir',
@@ -168,7 +185,6 @@ class _EventEditingPageState extends State<EventEditingPage> {
         ),
       );
 
-  // ValueChanged<Color> callback
   void changeColor(Color color) {
     setState(() => currentColor = color);
   }
@@ -246,15 +262,12 @@ class _EventEditingPageState extends State<EventEditingPage> {
 
   Widget _buildIsAllDay() => Row(
         children: <Widget>[
-          SizedBox(
-            width: 10,
-          ), //SizedBox
+          SizedBox(width: 10), //SizedBox
           Text(
             'Evento é o dia todo: ',
             style: TextStyle(fontSize: 17.0),
           ), //Text
           SizedBox(width: 10), //SizedBox
-          /** Checkbox Widget **/
           Checkbox(
             value: isAllDayMark,
             onChanged: (value) {
@@ -264,7 +277,6 @@ class _EventEditingPageState extends State<EventEditingPage> {
                 if (isAllDayMark) {
                   DateTime now = DateTime.now();
                   var allDayDate = DateTime(now.year, now.month, now.day);
-
                   fromDate = allDayDate;
                   toDate = allDayDate;
                 }
@@ -303,15 +315,6 @@ class _EventEditingPageState extends State<EventEditingPage> {
 
     if (date == null) return;
 
-    /*
-    Faz com que seja possivel selecionar uma data final (toDate) que é
-    anterior a data inicial(fromDate), mas ao fazer isso a data inicial vira a
-    data final -2 horas #TODO Escolher como implementar isso depois.
-    if (date.isBefore(fromDate)) {
-      fromDate = DateTime(
-          date.year, date.month, date.day, (toDate.hour - 2), fromDate.minute);
-    }
-    */
     setState(() => toDate = date);
   }
 
@@ -378,30 +381,33 @@ class _EventEditingPageState extends State<EventEditingPage> {
   }
 
   Future _saveForm() async {
-    final isValid = _formKey.currentState!.validate();
+  final isValid = _formKey.currentState!.validate();
 
-    if (isValid) {
-      final event = Event(
-        title: titleController.text,
-        description: descriptionController.text,
-        from: fromDate,
-        to: toDate,
-        isAllDay: isAllDayMark,
-        backgroundColor: currentColor,
-      );
+  if (isValid) {
+    final event = Event(
+      id: widget.event?.id ?? DateTime.now().millisecondsSinceEpoch, // Use o ID existente ou gere um novo
+      titulo: titleController.text,
+      descricao: descriptionController.text,
+      link: linkController.text,
+      pot: int.parse(potController.text),
+      participantes: participantsController.text.split(',').map((s) => int.tryParse(s.trim()) ?? 0).toList(), // Converte participantes para uma lista de inteiros
+      dataHora: fromDate,
+      createdAt: toDate,
+      isAllDay: isAllDayMark,
+      backgroundColor: currentColor,
+    );
 
-      final isEditing = widget.event != null;
-      final provider = Provider.of<EventProvider>(context, listen: false);
+    final isEditing = widget.event != null;
+    final provider = Provider.of<EventProvider>(context, listen: false);
 
-      if (isEditing) {
-        provider.editEvent(event, widget.event!);
-        Navigator.of(context).pop();
-      } else {
-        provider.addEvent(event);
-      }
-      Navigator.of(context).pop();
+    if (isEditing) {
+      provider.editEvent(event, widget.event!);
+    } else {
+      provider.addEvent(event);
     }
+    Navigator.of(context).pop();
   }
+}
 
   Future _deleteAppointment() async {
     final isEditing = widget.event != null;
