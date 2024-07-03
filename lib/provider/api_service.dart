@@ -3,8 +3,19 @@ import 'dart:convert';
 
 class ApiService {
   final String UrlAppend;
-  final String baseUrl = 'http://192.168.0.5:8000/api/v2/';  // Substitua pelo endereço apropriado
+  final String baseUrl = 'http://192.168.0.9:8000/api/v2/';  // Substitua pelo endereço apropriado
+  //otavio
+    //'http://192.168.0.53:8000/api/v2/'
 
+    //kyu daonde?
+    //'http://192.168.0.5:8000/api/v2/
+
+    //kyu são carlos pc
+    //'http://192.168.0.9:8000/api/v2/'
+
+    //kyu pedreira
+    //'http://192.168.15.108:8000/api/v2/'
+    
   ApiService({required this.UrlAppend});
 
   Future<List<dynamic>> fetchData() async {
