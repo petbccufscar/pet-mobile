@@ -14,6 +14,7 @@ class CalendarWidget extends StatefulWidget {
 
   const CalendarWidget({Key? key, required this.calendarController})
       : super(key: key);
+
   @override
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
@@ -33,9 +34,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
     );
 
     animation = CurvedAnimation(
-        parent: agendaController,
-        curve: Curves.ease,
-        reverseCurve: Curves.easeOut);
+      parent: agendaController,
+      curve: Curves.ease,
+      reverseCurve: Curves.easeOut,
+    );
 
     agendaController.addListener(() {
       setState(() {});
@@ -63,9 +65,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
           initialSelectedDate: DateTime.now(),
           cellBorderColor: Colors.transparent,
           monthViewSettings: MonthViewSettings(
-              showAgenda: true,
-              agendaViewHeight:
-                  (MediaQuery.of(context).size.height / 3.0) * animation.value),
+            showAgenda: true,
+            agendaViewHeight:
+                (MediaQuery.of(context).size.height / 3.0) * animation.value,
+          ),
           showNavigationArrow: true,
           onTap: _onCalendarCellTapped,
           onLongPress: (details) {
@@ -107,7 +110,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
       List<Event> dayEvents, DateTime selectedDate) {
     dayEvents.sort(
       (a, b) {
-        return a.from.compareTo(b.from);
+        return a.dataHora.compareTo(b.dataHora);
       },
     );
 
@@ -119,17 +122,19 @@ class _CalendarWidgetState extends State<CalendarWidget>
           content: _buildAppointmentsCardList(dayEvents),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Cancelar')),
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancelar'),
+            ),
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EventEditingPage(),
-                    ),
-                  );
-                },
-                child: Text('Adicionar'))
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EventEditingPage(),
+                  ),
+                );
+              },
+              child: Text('Adicionar'),
+            )
           ],
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -202,13 +207,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${dayEvents[index].title}',
+                              '${dayEvents[index].titulo}',
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(
                               dayEvents[index].isAllDay
                                   ? 'Todo o dia'
-                                  : '${Utils.toAppointmentFormat(dayEvents[index].from)} - ${Utils.toAppointmentFormat(dayEvents[index].to)}',
+                                  : '${Utils.toAppointmentFormat(dayEvents[index].dataHora)}',
                               style: TextStyle(fontSize: 14),
                             ),
                           ],

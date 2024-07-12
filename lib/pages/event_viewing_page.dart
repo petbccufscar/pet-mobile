@@ -27,7 +27,7 @@ class EventViewingPage extends StatelessWidget {
               height: 32,
             ),
             Text(
-              event.title,
+              event.titulo,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class EventViewingPage extends StatelessWidget {
               height: 24,
             ),
             Text(
-              event.description,
+              event.descricao,
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -49,8 +49,8 @@ class EventViewingPage extends StatelessWidget {
   Widget buildDateTime(Event event) {
     return Column(
       children: [
-        buildDate(event.isAllDay ? 'Dia todo' : 'De', event.from),
-        if (!event.isAllDay) buildDate('Até', event.to),
+        buildDate(event.isAllDay ? 'Dia todo' : 'De', event.dataHora),
+        if (!event.isAllDay) buildDate('Até', event.createdAt),
       ],
     );
   }
@@ -95,10 +95,9 @@ class EventViewingPage extends StatelessWidget {
         IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              final provider =
-                  Provider.of<EventProvider>(context, listen: false);
-
+              final provider = Provider.of<EventProvider>(context, listen: false);
               provider.deleteEvent(event);
+              Navigator.of(context).pop();
             }),
       ];
 }
