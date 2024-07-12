@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pet_mobile/widgets/side_menu_scaffold_with_profile_header.dart';
+import 'package:pet_mobile/provider/api_service.dart';
 
-class HelpPage extends StatelessWidget {
+class HelpPage extends StatefulWidget {
   HelpPage({Key? key}) : super(key: key);
 
-  final String email = 'petbcc@ufscar.br'; 
+  @override
+  _HelpPageState createState() => _HelpPageState();
+}
+
+class _HelpPageState extends State<HelpPage> {
+  late Future<List<dynamic>> futureHelpInfo;
+  final ApiService apiService = ApiService(UrlAppend: 'ajuda/'); // Ajuste o endpoint conforme necessário
+
+  @override
+  void initState() {
+    super.initState();
+    futureHelpInfo = apiService.fetchData();
+  }
+
+  final String email = 'petbcc@ufscar.br';
 
   @override
   Widget build(BuildContext context) {
-    // Textos para os cards. Como usamos o context para definir o locale, eles precisam ser construídos dentro do build.
-    final List<_HelpInfo> helpInfoList = [
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_1,
-          AppLocalizations.of(context)!.help_page_card_1_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_2,
-          AppLocalizations.of(context)!.help_page_card_2_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_3,
-          AppLocalizations.of(context)!.help_page_card_3_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_4,
-          AppLocalizations.of(context)!.help_page_card_4_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_5,
-          AppLocalizations.of(context)!.help_page_card_5_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_6,
-          AppLocalizations.of(context)!.help_page_card_6_text),
-      _HelpInfo(AppLocalizations.of(context)!.help_page_card_7,
-          AppLocalizations.of(context)!.help_page_card_7_text),
-    ];
-
     return SideMenuScaffoldWithProfileHeader(
       appBarTitle: Text(AppLocalizations.of(context)!.help_page_title),
       body: Container(
@@ -36,56 +33,71 @@ class HelpPage extends StatelessWidget {
           children: [
             // Lista com os cards de ajuda
             Expanded(
-              child: ListView.separated(
-                separatorBuilder: (BuildContext ctx, int index) {
-                  return SizedBox(
-                    height: 10,
-                  );
-                },
-                itemCount: helpInfoList.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      top: index == 0 ? 20 : 0,
-                      left: 20,
-                      right: 20,
-                      bottom: index == helpInfoList.length - 1
-                          ? MediaQuery.of(context).size.height * 0.5
-                          : 0,
-                    ),
-                    child: ExpansionTile(
-                      collapsedBackgroundColor: Color(0xFFF4F4F4),
-                      backgroundColor: Color(0xFFF4F4F4),
-                      title: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: RichText(
-                          text: TextSpan(
-                            text: helpInfoList[index].title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black54,
-                            ),
+              child: FutureBuilder<List<dynamic>>(
+                future: futureHelpInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No data available'));
+                  } else {
+                    List<_HelpInfo> helpInfoList = snapshot.data!.map<_HelpInfo>((item) {
+                      return _HelpInfo(item['titulo'], item['descricao']);
+                    }).toList();
+
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext ctx, int index) {
+                        return SizedBox(height: 10);
+                      },
+                      itemCount: helpInfoList.length,
+                      itemBuilder: (BuildContext ctx, int index) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            top: index == 0 ? 20 : 0,
+                            left: 20,
+                            right: 20,
+                            bottom: index == helpInfoList.length - 1
+                                ? MediaQuery.of(context).size.height * 0.5
+                                : 0,
                           ),
-                        ),
-                      ),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: RichText(
-                            textAlign: TextAlign.justify,
-                            text: TextSpan(
-                              text: helpInfoList[index].info,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
+                          child: ExpansionTile(
+                            collapsedBackgroundColor: Color(0xFFF4F4F4),
+                            backgroundColor: Color(0xFFF4F4F4),
+                            title: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: helpInfoList[index].title,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black54,
+                                  ),
+                                ),
                               ),
                             ),
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: RichText(
+                                  textAlign: TextAlign.justify,
+                                  text: TextSpan(
+                                    text: helpInfoList[index].info,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  }
                 },
               ),
             ),
@@ -96,9 +108,7 @@ class HelpPage extends StatelessWidget {
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: email));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            'E-mail copiado para a área de transferência')),
+                    SnackBar(content: Text('E-mail copiado para a área de transferência')),
                   );
                 },
                 child: Text(
